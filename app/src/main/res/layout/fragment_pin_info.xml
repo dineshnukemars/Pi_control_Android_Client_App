@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/view_pinRadioContainer1"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pinRadioContainer2"
+        app:layout_constraintEnd_toStartOf="@+id/view_pinRadioContainer2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_pinRadioContainer2">
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="1"
+            android:text="[1] 3V3 power" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="3"
+            android:text="[3] GPIO 2 (SDA)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="5"
+            android:text="[5] GPIO 3 (SCL)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="7"
+            android:text="[7] GPIO 4 (GPCLK0)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="9"
+            android:text="[9] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="11"
+            android:text="[11] GPIO 17" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="13"
+            android:text="[13] GPIO 27" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="15"
+            android:text="[15] GPIO 22" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="17"
+            android:text="[17] 3V3" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="19"
+            android:text="[19] GPIO 10 (MOSI)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="21"
+            android:text="[21] GPIO 9 (MISO)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="23"
+            android:text="[23] GPIO 11 (SCLK)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="25"
+            android:text="[25] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="27"
+            android:text="[27] GPIO 0 (ID_SD)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="29"
+            android:text="[29] GPIO 5" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="31"
+            android:text="[31] GPIO 6" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="33"
+            android:text="[33] GPIO 13 (PWM1)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="35"
+            android:text="[35] GPIO 19 (PCM_FS)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="37"
+            android:text="[37] GPIO 26" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="39"
+            android:text="[39] Ground" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_pinRadioContainer2"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/view_pinRadioContainer1"
+        app:layout_constraintTop_toBottomOf="@+id/stopServerBtn"
+        app:layout_constraintVertical_bias="0.19">
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="2"
+            android:text="[2] 5V power" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="4"
+            android:text="[4] 5V power" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="6"
+            android:text="[6] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="8"
+            android:text="[8] GPIO 14 (TXD)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="10"
+            android:text="[10] GPIO 15 (RXD)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="12"
+            android:text="[12] GPIO 18 (PCM_CLK)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="14"
+            android:text="[14] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="16"
+            android:text="[16] GPIO 23" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="18"
+            android:text="[18] GPIO 24" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="20"
+            android:text="[20] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="22"
+            android:text="[22] GPIO 25" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="24"
+            android:text="[24] GPIO 8 (CE0)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="26"
+            android:text="[26] GPIO 7 (CE1)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="28"
+            android:text="[28] GPIO 1 (ID_SC)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="30"
+            android:text="[30] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="32"
+            android:text="[32] GPIO 12 (PWM0)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="34"
+            android:text="[34] Ground" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="36"
+            android:text="[36] GPIO 16" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="38"
+            android:text="[38] GPIO 20 (PCM_DIN)" />
+
+        <CheckBox
+            style="@style/RadioStyle"
+            android:tag="40"
+            android:text="[40] GPIO 21 (PCM_DOUT)" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/stopServerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Stop Server"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
