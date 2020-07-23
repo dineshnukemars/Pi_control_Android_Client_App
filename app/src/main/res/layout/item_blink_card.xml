@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/itemCardStyle">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/pinTopLayout"
+            layout="@layout/item_pin_title_with_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/onTimeEditV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="4"
+            android:hint="On Time"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pinTopLayout" />
+
+        <EditText
+            android:id="@+id/offTimeEditV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="4"
+            android:hint="Off Time"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/onTimeEditV"
+            app:layout_constraintTop_toBottomOf="@+id/pinTopLayout" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/updateBtnV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:baseline="@id/offTimeEditV"
+            app:layout_constraintBottom_toBottomOf="@+id/offTimeEditV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/offTimeEditV"
+            app:srcCompat="@drawable/ic_baseline_update_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

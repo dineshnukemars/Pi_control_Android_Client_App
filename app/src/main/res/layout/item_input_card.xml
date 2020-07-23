@@ -14,11 +14,11 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/pinNotConfiguredMessageTextV"
+            android:id="@+id/pinInputValTextV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Pin is not configured yet"
+            android:text="Pin input value"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pinTopLayout" />
 

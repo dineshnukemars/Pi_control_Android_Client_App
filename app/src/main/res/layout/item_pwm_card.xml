@@ -13,12 +13,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/pinNotConfiguredMessageTextV"
-            android:layout_width="wrap_content"
+        <SeekBar
+            android:id="@+id/pwmSeekBarV"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Pin is not configured yet"
+            android:max="10"
+            android:progress="4"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pinTopLayout" />
 
