@@ -8,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.PinData
 import com.sky.pi.picontrolclient.getGpioText
 import com.sky.pi.picontrolclient.pinDataArray
-import com.sky.pi.picontrolclient.repos.GrpcClientRepo
+import com.sky.pi.picontrolclient.repos.PiAccessRepo
 import com.sky.pi.picontrolclient.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class PinViewModel(val repo: GrpcClientRepo) : ViewModel() {
+class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
 
     private val selectedPinList: ArrayList<PinData> = ArrayList()
     private var currentPinData: PinData? = null
@@ -110,7 +110,7 @@ class PinViewModel(val repo: GrpcClientRepo) : ViewModel() {
     }
 
     fun close() {
-        repo.close()
+        repo.disconnectServer()
     }
 }
 

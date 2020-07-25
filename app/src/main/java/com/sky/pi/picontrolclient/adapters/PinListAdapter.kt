@@ -10,7 +10,7 @@ import com.sky.pi.picontrolclient.PinData
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.getGpioText
 import com.sky.pi.picontrolclient.inflateLayout
-import kotlinx.android.synthetic.main.item_pindata.view.*
+import kotlinx.android.synthetic.main.item_pin_title_with_options.view.*
 
 class PinListAdapter(
     private val onClickItem: (pinNo: Int) -> Unit
@@ -25,8 +25,8 @@ class PinListAdapter(
 
         @SuppressLint("SetTextI18n")
         fun setDataToView(pinData: PinData) {
-            itemView.itemView_pinData.text = getGpioText(pinData)
-            itemView.itemView_pinData.setOnClickListener { onClickItem(pinData.pinNo) }
+            itemView.pinTextV.text = getGpioText(pinData)
+            itemView.pinTextV.setOnClickListener { onClickItem(pinData.pinNo) }
         }
     }
 

@@ -32,6 +32,7 @@ class PinSetupFragment : Fragment() {
 
         val pinListAdapter = PinListAdapter {
             viewModel.setSelectedPinOnList(it)
+            PinConfigDialogFragment().show(parentFragmentManager, "ConfigDialog")
         }
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
