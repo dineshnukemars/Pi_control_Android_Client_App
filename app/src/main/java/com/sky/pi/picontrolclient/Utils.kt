@@ -29,27 +29,3 @@ val myModule = module {
         PinViewModel(get())
     }
 }
-
-fun getGpioText(pinData: PinData): String {
-    val builder = StringBuilder()
-    builder.append("Pin no ${pinData.pinNo}  ")
-    if (pinData.gpioNo < 0) {
-        val gpioType = pinData.gpioType
-        val type = when {
-            gpioType.contains(GPIOType.GROUND) -> {
-                GPIOType.GROUND.name
-            }
-            gpioType.contains(GPIOType.POWER_5V) -> {
-                GPIOType.POWER_5V.name
-            }
-            gpioType.contains(GPIOType.POWER_3V) -> {
-                GPIOType.POWER_3V.name
-            }
-            else -> ""
-        }
-        builder.append(type)
-    } else {
-        builder.append("GPIO - ${pinData.gpioNo}")
-    }
-    return builder.toString()
-}

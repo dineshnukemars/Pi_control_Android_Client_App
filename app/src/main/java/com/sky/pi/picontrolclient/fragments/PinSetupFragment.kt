@@ -32,7 +32,6 @@ class PinSetupFragment : Fragment() {
 
         val pinListAdapter = PinListAdapter {
             viewModel.setSelectedPinOnList(it)
-            PinConfigDialogFragment().show(parentFragmentManager, "ConfigDialog")
         }
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
@@ -50,7 +49,6 @@ class PinSetupFragment : Fragment() {
         viewModel.blinkContainerLD.observe(this) { blinkContainerV.visibility = it }
         viewModel.switchContainerLD.observe(this) { switchContainerV.visibility = it }
         viewModel.pwmContainerLD.observe(this) { pwmContainerV.visibility = it }
-        viewModel.selectedPinLD.observe(this) { selectedPinV.text = it }
 
         switchV.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.setSwitchState(isChecked)

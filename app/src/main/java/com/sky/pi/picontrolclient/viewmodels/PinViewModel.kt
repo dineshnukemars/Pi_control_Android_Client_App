@@ -20,9 +20,6 @@ class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
     private val _pinListLiveData = MutableLiveData(selectedPinList)
     val pinListLiveData: LiveData<ArrayList<PinData>> = _pinListLiveData
 
-    private val _selectedPinLD = MutableLiveData("No pin Selected")
-    val selectedPinLD: LiveData<String> = _selectedPinLD
-
     private val _radioGroupLD = MutableLiveData(View.GONE)
     val radioGroupLD: LiveData<Int> = _radioGroupLD
 
@@ -61,7 +58,6 @@ class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
         val pinData = selectedPinList.find { it.pinNo == pinNo }
             ?: throw IllegalStateException("unknown pin")
         currentPinData = pinData
-        _selectedPinLD.value = getGpioText(pinData)
         _radioGroupLD.value = if (pinData.gpioNo > 0) View.VISIBLE else View.GONE
     }
 

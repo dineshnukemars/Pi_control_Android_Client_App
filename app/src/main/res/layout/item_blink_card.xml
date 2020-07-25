@@ -3,49 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/itemCardStyle">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout style="@style/itemCardContainerStyle">
 
         <include
-            android:id="@+id/pinTopLayout"
-            layout="@layout/item_pin_title_with_options"
+            style="@style/itemHeaderIncludeStyle"
+            layout="@layout/item_pin_title_with_options" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/onTimeEditV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="4"
-            android:hint="On Time"
-            android:inputType="number"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pinTopLayout" />
+            <SeekBar
+                android:id="@+id/onTimeSeekBarV"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="6dp"
+                android:max="10"
+                android:progress="4"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/totalBlinkPeriodSpinnerV"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/offTimeEditV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:ems="4"
-            android:hint="Off Time"
-            android:inputType="number"
-            app:layout_constraintStart_toEndOf="@+id/onTimeEditV"
-            app:layout_constraintTop_toBottomOf="@+id/pinTopLayout" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/wavePeriodSpinnerV"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/onTimeSeekBarV"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/updateBtnV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:baseline="@id/offTimeEditV"
-            app:layout_constraintBottom_toBottomOf="@+id/offTimeEditV"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/offTimeEditV"
-            app:srcCompat="@drawable/ic_baseline_update_24" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
