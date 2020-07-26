@@ -23,7 +23,7 @@
                 android:progress="4"
                 android:layout_marginEnd="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/totalBlinkPeriodSpinnerV"
+                app:layout_constraintEnd_toStartOf="@+id/wavePeriodSpinnerV"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

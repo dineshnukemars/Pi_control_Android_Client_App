@@ -97,9 +97,9 @@ data class BoardInfo(
 }
 
 sealed class OperationType {
+    object NONE : OperationType()
     class INPUT(val readData: String) : OperationType()
-    class PWM(val frequency: Int, val dutyCycle: Float) : OperationType()
     class SWITCH(val isOn: Boolean) : OperationType()
     class BLINK(val wavePeriod: Int, highTime: Float) : OperationType()
-    object NONE : OperationType()
+    class PWM(val frequency: Int, val dutyCycle: Float) : OperationType()
 }

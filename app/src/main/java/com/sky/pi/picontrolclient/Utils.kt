@@ -3,12 +3,8 @@ package com.sky.pi.picontrolclient
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.annotation.LayoutRes
-import com.sky.pi.picontrolclient.repos.FakePiAccessRepoImpl
-import com.sky.pi.picontrolclient.repos.PiAccessRepo
-import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 
 const val serverIp = "192.168.0.16"
 const val serverPort = 50053
@@ -17,15 +13,22 @@ fun ViewGroup.inflateLayout(@LayoutRes layoutId: Int): View {
     return LayoutInflater.from(context).inflate(layoutId, this, false)
 }
 
-val myModule = module {
-    single<PiAccessRepo> {
-//        PiAccessRepoImpl(
-//            serverIp,
-//            serverPort
-//        )
-        FakePiAccessRepoImpl(serverIp, serverPort)
-    }
-    viewModel {
-        PinViewModel(get())
-    }
+fun doNothing() {
+    // nothing, just to satisfy the when statement
+}
+
+fun SeekBar.setSeekBarListener(onStopTrack: (seekBar: SeekBar) -> Unit) {
+    setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(
+            seekBar: SeekBar,
+            progress: Int,
+            fromUser: Boolean
+        ) = Unit
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
+            onStopTrack(seekBar)
+        }
+    })
 }

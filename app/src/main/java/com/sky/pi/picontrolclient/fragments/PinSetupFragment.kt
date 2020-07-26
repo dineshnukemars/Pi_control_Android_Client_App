@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
+import com.sky.pi.picontrolclient.viewmodels.Navigate
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.fragment_pin_setup.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -30,14 +31,23 @@ class PinSetupFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val pinListAdapter = PinListAdapter {
-            viewModel.setSelectedPinOnList(it)
-        }
+        val pinListAdapter = PinListAdapter(viewModel::setItemAction)
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
 
         viewModel.pinListLiveData.observe(viewLifecycleOwner, Observer {
             pinListAdapter.submitList(it)
+            pinListAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.navigationLD.observe(viewLifecycleOwner, Observer { navigate ->
+            when (navigate) {
+                Navigate.CONFIG_DIALOG -> PinConfigDialogFragment().show(
+                    parentFragmentManager,
+                    "ConfigDialog"
+                )
+                Navigate.PIN_LIST_FRAGMENT -> TODO()
+            }
         })
 
         radioGroupV.setOnCheckedChangeListener { group, checkedId ->

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.PinData
-import com.sky.pi.picontrolclient.getGpioText
+import com.sky.pi.picontrolclient.adapters.ItemAction
 import com.sky.pi.picontrolclient.pinDataArray
 import com.sky.pi.picontrolclient.repos.PiAccessRepo
 import com.sky.pi.picontrolclient.utils.SingleLiveEvent
@@ -35,6 +35,9 @@ class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
     private val _errorMessageLD = SingleLiveEvent<AppMessages>()
     val errorMessageLD: LiveData<AppMessages> = _errorMessageLD
 
+    private val _navigationLD = SingleLiveEvent<Navigate>()
+    val navigationLD: LiveData<Navigate> = _navigationLD
+
     init {
         viewModelScope.launch {
             repo.getInfo("Android Client")
@@ -52,6 +55,20 @@ class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
             selectedPinList.add(foundPinData)
 
         _pinListLiveData.value = selectedPinList
+    }
+
+    fun setItemAction(itemAction: ItemAction, pinData: PinData) {
+        when (itemAction) {
+            ItemAction.RemovePin -> {
+                val foundPinData = selectedPinList.find {
+                    it.pinNo == pinData.pinNo
+                } ?: throw IllegalStateException("unknown pin")
+                selectedPinList.remove(foundPinData)
+                _pinListLiveData.value = selectedPinList
+            }
+            ItemAction.ConfigurePin -> _navigationLD.value = Navigate.CONFIG_DIALOG
+            ItemAction.UpdateData -> TODO()
+        }
     }
 
     fun setSelectedPinOnList(pinNo: Int) {
@@ -121,4 +138,9 @@ enum class AppMessages(val message: String) {
     CONNECTION_ERROR("Could not connect to server"),
     COMMAND_SUCCESS("Command success"),
     COMMAND_FAILED("command failed")
+}
+
+enum class Navigate {
+    CONFIG_DIALOG,
+    PIN_LIST_FRAGMENT
 }
