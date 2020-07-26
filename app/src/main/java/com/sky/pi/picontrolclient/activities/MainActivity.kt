@@ -1,10 +1,8 @@
 package com.sky.pi.picontrolclient.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.fragments.PinInfoFragment
 import com.sky.pi.picontrolclient.fragments.PinSetupFragment
@@ -28,9 +26,6 @@ class MainActivity : AppCompatActivity() {
         viewMainAct_PinSetup.setOnClickListener {
             launchFragment(PinSetupFragment.getInstance())
         }
-        viewModel.errorMessageLD.observe(this, Observer {
-            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-        })
     }
 
     private fun launchFragment(fragment: Fragment) {

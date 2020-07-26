@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
 import com.sky.pi.picontrolclient.observe
-import com.sky.pi.picontrolclient.viewmodels.Navigate
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.fragment_pin_setup.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -36,15 +35,8 @@ class PinSetupFragment : Fragment() {
             pinListAdapter.submitList(it)
             pinListAdapter.notifyDataSetChanged()
         }
-
-        viewModel.navigationLD.observe(this) { navigate ->
-            when (navigate) {
-                Navigate.CONFIG_DIALOG -> PinConfigDialogFragment().show(
-                    parentFragmentManager,
-                    "ConfigDialog"
-                )
-                Navigate.PIN_LIST_FRAGMENT -> TODO()
-            }
+        viewModel.showConfigDialog.observe(this) {
+            PinConfigDialogFragment.showDialog(parentFragmentManager)
         }
     }
 

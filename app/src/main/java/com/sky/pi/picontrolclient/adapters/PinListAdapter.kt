@@ -92,22 +92,6 @@ class PinListAdapter(
         val opType: KClass<T>,
         @LayoutRes val layoutId: Int
     )
-
-    fun buildPwmPin() {
-
-    }
-
-    fun buildSwitchPin() {
-
-    }
-
-    fun buildBlinkPin() {
-
-    }
-
-    fun buildInputPin() {
-
-    }
 }
 
 class PinListDiffCallback : DiffUtil.ItemCallback<PinData>() {

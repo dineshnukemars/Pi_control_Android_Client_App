@@ -6,6 +6,7 @@ import com.sky.pi.picontrolclient.BoardInfo
 interface PiAccessRepo {
 
     val isServerActive: LiveData<Boolean>
+
     val isServerConnected: LiveData<Boolean>
 
     suspend fun startServer(): Boolean

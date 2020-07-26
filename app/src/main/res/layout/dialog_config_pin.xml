@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,6 +17,7 @@
             android:id="@+id/blinkRadioBtnV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:tag="radio_blinkV"
             android:text="BLINK" />
 
@@ -25,6 +25,7 @@
             android:id="@+id/switchRadioBtnV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:tag="radio_switchV"
             android:text="SWITCH" />
 
@@ -32,6 +33,7 @@
             android:id="@+id/pwmRadioBtnV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:tag="radio_pwmV"
             android:text="PWM" />
 
@@ -39,6 +41,7 @@
             android:id="@+id/inputRadioBtnV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:tag="radio_inputV"
             android:text="INPUT" />
 
