@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
+import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.Navigate
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.fragment_pin_setup.*
@@ -35,12 +32,12 @@ class PinSetupFragment : Fragment() {
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
 
-        viewModel.pinListLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.pinListLiveData.observe(this) {
             pinListAdapter.submitList(it)
             pinListAdapter.notifyDataSetChanged()
-        })
+        }
 
-        viewModel.navigationLD.observe(viewLifecycleOwner, Observer { navigate ->
+        viewModel.navigationLD.observe(this) { navigate ->
             when (navigate) {
                 Navigate.CONFIG_DIALOG -> PinConfigDialogFragment().show(
                     parentFragmentManager,
@@ -48,36 +45,7 @@ class PinSetupFragment : Fragment() {
                 )
                 Navigate.PIN_LIST_FRAGMENT -> TODO()
             }
-        })
-
-        radioGroupV.setOnCheckedChangeListener { group, checkedId ->
-            val selectedRadio = group.findViewById<RadioButton>(checkedId)
-            viewModel.setRadioSelected(selectedRadio.tag.toString())
         }
-
-        viewModel.radioGroupLD.observe(this) { radioGroupV.visibility = it }
-        viewModel.blinkContainerLD.observe(this) { blinkContainerV.visibility = it }
-        viewModel.switchContainerLD.observe(this) { switchContainerV.visibility = it }
-        viewModel.pwmContainerLD.observe(this) { pwmContainerV.visibility = it }
-
-        switchV.setOnCheckedChangeListener { buttonView, isChecked ->
-            viewModel.setSwitchState(isChecked)
-        }
-
-
-        pwmDutyCycleV.max = 100
-        pwmDutyCycleV.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                viewModel.setPwm(seekBar.progress, frequencyEditV.text.toString().toInt())
-            }
-        })
-
     }
 
     companion object {
@@ -85,12 +53,4 @@ class PinSetupFragment : Fragment() {
             return PinSetupFragment()
         }
     }
-}
-
-fun <T> LiveData<T>.observe(fragment: Fragment, block: (T) -> Unit) {
-    observe(fragment.viewLifecycleOwner, Observer {
-        it?.let { t ->
-            block(t)
-        }
-    })
 }
