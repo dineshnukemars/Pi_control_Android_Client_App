@@ -15,19 +15,20 @@ import kotlinx.android.synthetic.main.fragment_board_pin_layout.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PinInfoFragment : Fragment() {
-
     private val viewModel by sharedViewModel<PinViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_board_pin_layout, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_board_pin_layout, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCheckBoxes(view)
+    }
+
+    private fun setupCheckBoxes(view: View) {
         view_pinRadioContainer1.children.forEach(::setListenerToCheckBox)
         view_pinRadioContainer2.children.forEach(::setListenerToCheckBox)
         viewModel.pinListLiveData.observe(this) { pinList ->
@@ -52,8 +53,6 @@ class PinInfoFragment : Fragment() {
     }
 
     companion object {
-        fun getInstance(): PinInfoFragment {
-            return PinInfoFragment()
-        }
+        fun getInstance() = PinInfoFragment()
     }
 }
