@@ -75,7 +75,7 @@ class PinListAdapter(
             operationData: OperationData.PWM
         ) {
             itemView.pwmSeekBarV.setSeekBarListener {
-                onUpdatePin(pinNo, operationData.copy(dutyCycle = it.progress.toFloat()))
+                onUpdatePin(pinNo, operationData.copy(dutyCycle = it.progress.toFloat() / 100))
             }
         }
     }

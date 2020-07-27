@@ -10,7 +10,7 @@ import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
 import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import kotlinx.android.synthetic.main.fragment_pin_setup.*
+import kotlinx.android.synthetic.main.fragment_selected_pin_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PinSetupFragment : Fragment() {
@@ -29,7 +29,7 @@ class PinSetupFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_pin_setup, container, false)
+        return inflater.inflate(R.layout.fragment_selected_pin_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

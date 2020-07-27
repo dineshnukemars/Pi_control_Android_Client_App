@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.OperationData
 import com.sky.pi.picontrolclient.PinData
-import com.sky.pi.picontrolclient.pinDataArray
 import com.sky.pi.picontrolclient.repos.PiAccessRepo
+import com.sky.pi.picontrolclient.repos.PinRepo
 import kotlinx.coroutines.launch
 
-class PinViewModel(val repo: PiAccessRepo, val pinRepo: PinRepo) : ViewModel() {
+class PinViewModel(private val repo: PiAccessRepo, private val pinRepo: PinRepo) : ViewModel() {
 
     private val _pinListLiveData = MutableLiveData(arrayListOf<PinData>())
     val pinListLiveData: LiveData<ArrayList<PinData>> = _pinListLiveData
@@ -27,8 +27,8 @@ class PinViewModel(val repo: PiAccessRepo, val pinRepo: PinRepo) : ViewModel() {
     ) {
         viewModelScope.launch {
             repo.setPinState(
-                operationData.isOn,
-                gpioNo
+                state = operationData.isOn,
+                pinNo = gpioNo
             )
         }
     }
@@ -39,9 +39,9 @@ class PinViewModel(val repo: PiAccessRepo, val pinRepo: PinRepo) : ViewModel() {
     ) {
         viewModelScope.launch {
             repo.setPwm(
-                gpioNo,
-                operationData.dutyCycle / 100,
-                operationData.frequency
+                pin = gpioNo,
+                dutyCycle = operationData.dutyCycle,
+                frequency = operationData.frequency
             )
         }
     }
@@ -50,9 +50,7 @@ class PinViewModel(val repo: PiAccessRepo, val pinRepo: PinRepo) : ViewModel() {
         viewModelScope.launch { repo.shutdownServer() }
     }
 
-    fun close() {
-        repo.disconnectServer()
-    }
+    fun close():Unit = repo.disconnectServer()
 
     fun deletePin(pinNo: Int) {
         pinRepo.deletePin(pinNo)
@@ -76,31 +74,5 @@ class PinViewModel(val repo: PiAccessRepo, val pinRepo: PinRepo) : ViewModel() {
             is OperationData.PWM -> setPwm(pinData.gpioNo, operationData)
             OperationData.NONE -> println("if this is printing then something is wrong")
         }
-    }
-}
-
-class PinRepo {
-    val pinList: ArrayList<PinData> = ArrayList()
-
-    fun replacePin(updatedPinData: PinData) {
-        val oldPinDataIndex = pinList.indexOfFirst { it.pinNo == updatedPinData.pinNo }
-        pinList.removeAt(oldPinDataIndex)
-        pinList.add(oldPinDataIndex, updatedPinData)
-    }
-
-    fun getPin(pinNo: Int): PinData {
-        return pinList.find { it.pinNo == pinNo } ?: throw Error("WTF")
-    }
-
-    fun deletePin(pinNo: Int) {
-        val pinData = pinList.find { it.pinNo == pinNo } ?: throw Error("WTF")
-        pinList.remove(pinData)
-    }
-
-    fun addPin(pinNo: Int) {
-        val foundPinData: PinData =
-            pinDataArray.find { it.pinNo == pinNo } ?: throw IllegalStateException("unknown pin")
-
-        if (!pinList.contains(foundPinData)) pinList.add(foundPinData)
     }
 }
