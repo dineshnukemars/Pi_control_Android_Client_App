@@ -7,6 +7,7 @@ import android.widget.SeekBar
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
 const val serverIp = "192.168.0.16"
@@ -42,4 +43,10 @@ fun <T> LiveData<T>.observe(fragment: Fragment, block: (T) -> Unit) {
             block(t)
         }
     })
+}
+
+object Trigger
+
+fun MutableLiveData<Trigger>.trigger() {
+    value = Trigger
 }

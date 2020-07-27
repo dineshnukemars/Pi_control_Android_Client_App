@@ -16,15 +16,18 @@ class FakePiAccessRepoImpl(ipAddress: String, port: Int) : PiAccessRepo {
 
     override suspend fun startServer(): Boolean {
         _isServerActive.value = true
+        println("fake startServer")
         return commandSuccess
     }
 
     override suspend fun connectServer(): Boolean {
         _isServerConnected.value = true
+        println("fake connectServer")
         return commandSuccess
     }
 
     override suspend fun getInfo(deviceId: String): BoardInfo {
+        println("fake getInfo")
         return BoardInfo(
             make = "fakeMake",
             model = "fakeModel",
@@ -35,10 +38,12 @@ class FakePiAccessRepoImpl(ipAddress: String, port: Int) : PiAccessRepo {
     }
 
     override suspend fun setPinState(state: Boolean, pinNo: Int): Boolean {
+        println("fake setPinState $state $pinNo")
         return commandSuccess
     }
 
     override suspend fun setPwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
+        println("fake setPwm $pin $dutyCycle $frequency")
         return commandSuccess
     }
 
@@ -51,5 +56,4 @@ class FakePiAccessRepoImpl(ipAddress: String, port: Int) : PiAccessRepo {
         println("close connection")
         _isServerConnected.value = false
     }
-
 }

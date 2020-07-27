@@ -16,6 +16,14 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class PinSetupFragment : Fragment() {
     private val viewModel by sharedViewModel<PinViewModel>()
 
+    private val pinListAdapter: PinListAdapter by lazy {
+        PinListAdapter(
+            onConfigurePin = ::openConfigDialog,
+            onUpdatePin = viewModel::updatePinData,
+            onDeletePin = viewModel::deletePin
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +35,7 @@ class PinSetupFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val pinListAdapter = PinListAdapter(viewModel::setItemAction)
+        val pinListAdapter = pinListAdapter
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
 
@@ -35,10 +43,10 @@ class PinSetupFragment : Fragment() {
             pinListAdapter.submitList(it)
             pinListAdapter.notifyDataSetChanged()
         }
-        viewModel.showConfigDialog.observe(this) {
-            PinConfigDialogFragment.showDialog(parentFragmentManager)
-        }
     }
+
+    private fun openConfigDialog(pinNo: Int): Unit =
+        PinConfigDialogFragment.showDialog(pinNo, parentFragmentManager)
 
     companion object {
         fun getInstance(): PinSetupFragment {

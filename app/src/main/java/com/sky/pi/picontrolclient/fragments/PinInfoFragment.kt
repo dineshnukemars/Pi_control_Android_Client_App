@@ -27,8 +27,8 @@ class PinInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view_pinRadioContainer1.children.forEach(::setListenerToChilds)
-        view_pinRadioContainer2.children.forEach(::setListenerToChilds)
+        view_pinRadioContainer1.children.forEach(::setListenerToCheckBox)
+        view_pinRadioContainer2.children.forEach(::setListenerToCheckBox)
 
         viewModel.pinListLiveData.observe(viewLifecycleOwner, Observer {
             it.forEach { data ->
@@ -41,10 +41,14 @@ class PinInfoFragment : Fragment() {
         }
     }
 
-    private fun setListenerToChilds(containerView: View?) {
+    private fun setListenerToCheckBox(containerView: View?) {
         val checkBox = containerView as CheckBox
-        checkBox.setOnClickListener { child ->
-            viewModel.pinClicked(child.tag.toString().toInt(), checkBox.isChecked)
+        checkBox.setOnClickListener {
+            val pinNo = checkBox.tag.toString().toInt()
+            when {
+                checkBox.isChecked -> viewModel.addPin(pinNo)
+                else -> viewModel.deletePin(pinNo)
+            }
         }
     }
 

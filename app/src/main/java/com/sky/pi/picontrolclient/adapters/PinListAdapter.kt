@@ -15,48 +15,67 @@ import kotlinx.android.synthetic.main.item_switch_card.view.*
 import kotlin.reflect.KClass
 
 class PinListAdapter(
-    private val onClickItem: (itemAction: ItemAction, pinData: PinData) -> Unit
+    private val onDeletePin: (pinNo: Int) -> Unit,
+    private val onConfigurePin: (pinNo: Int) -> Unit,
+    private val onUpdatePin: (pinNo: Int, operationData: OperationData) -> Unit
 ) : ListAdapter<PinData, PinListAdapter.PinViewHolder>(
     PinListDiffCallback()
 ) {
+    private val viewTypeArray =
+        arrayOf(
+            ViewType(0, OperationData.NONE::class, R.layout.item_pindata),
+            ViewType(1, OperationData.INPUT::class, R.layout.item_input_card),
+            ViewType(2, OperationData.SWITCH::class, R.layout.item_switch_card),
+            ViewType(3, OperationData.BLINK::class, R.layout.item_blink_card),
+            ViewType(4, OperationData.PWM::class, R.layout.item_pwm_card)
+        )
 
-    inner class PinViewHolder(
-        pinView: View
-    ) : RecyclerView.ViewHolder(pinView) {
+    inner class PinViewHolder(pinView: View) : RecyclerView.ViewHolder(pinView) {
 
         @SuppressLint("SetTextI18n")
         fun setDataToView(pinData: PinData) {
+            val pinNo = pinData.pinNo
             itemView.pinTextV.text = "gpio ${pinData.gpioNo} type ${pinData.gpioType}"
-            itemView.deletePinImgV.setOnClickListener {
-                onClickItem(ItemAction.RemovePin, pinData)
-            }
-            itemView.pinConfigureImgV.setOnClickListener {
-                onClickItem(ItemAction.ConfigurePin, pinData)
-            }
+            itemView.deletePinImgV.setOnClickListener { onDeletePin(pinNo) }
+            itemView.pinConfigureImgV.setOnClickListener { onConfigurePin(pinNo) }
+            setLayoutSpecificData(pinData, pinNo)
+        }
 
-            when (pinData.operationType) {
-                is OperationType.INPUT -> {
-                    println("not implemented yet")
-                }
-                is OperationType.PWM -> {
-                    itemView.pwmSeekBarV.setSeekBarListener {
-                        onClickItem(ItemAction.UpdateData, pinData)
-                    }
-                }
-                is OperationType.SWITCH -> {
-                    itemView.pinSwitchV.setOnCheckedChangeListener { _, isChecked ->
-                        onClickItem(
-                            ItemAction.UpdateData,
-                            pinData.copy(operationType = OperationType.SWITCH(isChecked))
-                        )
-                    }
-                }
-                is OperationType.BLINK -> {
-                    itemView.onTimeSeekBarV.setSeekBarListener {
-                        onClickItem(ItemAction.UpdateData, pinData)
-                    }
-                }
-                is OperationType.NONE -> doNothing()
+        private fun setLayoutSpecificData(
+            pinData: PinData,
+            pinNo: Int
+        ): Unit = when (val operationData = pinData.operationData) {
+            is OperationData.INPUT -> println("not implemented yet")
+            is OperationData.PWM -> listenPwmSeekBarChange(pinNo, operationData)
+            is OperationData.SWITCH -> listenSwitchChange(pinNo, operationData)
+            is OperationData.BLINK -> listenBlinkSeekBarChange(pinNo, operationData)
+            is OperationData.NONE -> doNothing()
+        }
+
+        private fun listenBlinkSeekBarChange(
+            pinNo: Int,
+            operationData: OperationData.BLINK
+        ) {
+            itemView.onTimeSeekBarV.setSeekBarListener {
+                onUpdatePin(pinNo, operationData.copy(highTime = it.progress.toFloat()))
+            }
+        }
+
+        private fun listenSwitchChange(
+            pinNo: Int,
+            operationData: OperationData.SWITCH
+        ) {
+            itemView.pinSwitchV.setOnCheckedChangeListener { _, isChecked ->
+                onUpdatePin(pinNo, operationData.copy(isOn = isChecked))
+            }
+        }
+
+        private fun listenPwmSeekBarChange(
+            pinNo: Int,
+            operationData: OperationData.PWM
+        ) {
+            itemView.pwmSeekBarV.setSeekBarListener {
+                onUpdatePin(pinNo, operationData.copy(dutyCycle = it.progress.toFloat()))
             }
         }
     }
@@ -74,20 +93,11 @@ class PinListAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return viewTypeArray.find {
-            it.opType == getItem(position).operationType::class
+            it.opType == getItem(position).operationData::class
         }?.id ?: throw Error("operation type not found")
     }
 
-    private val viewTypeArray =
-        arrayOf(
-            ViewTypeData(0, OperationType.NONE::class, R.layout.item_pindata),
-            ViewTypeData(1, OperationType.INPUT::class, R.layout.item_input_card),
-            ViewTypeData(2, OperationType.SWITCH::class, R.layout.item_switch_card),
-            ViewTypeData(3, OperationType.BLINK::class, R.layout.item_blink_card),
-            ViewTypeData(4, OperationType.PWM::class, R.layout.item_pwm_card)
-        )
-
-    private data class ViewTypeData<T : Any>(
+    private data class ViewType<T : Any>(
         val id: Int,
         val opType: KClass<T>,
         @LayoutRes val layoutId: Int
@@ -102,10 +112,4 @@ class PinListDiffCallback : DiffUtil.ItemCallback<PinData>() {
     override fun areContentsTheSame(oldItem: PinData, newItem: PinData): Boolean {
         return oldItem == newItem
     }
-}
-
-enum class ItemAction {
-    RemovePin,
-    ConfigurePin,
-    UpdateData
 }

@@ -4,24 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.pi.picontrolclient.OperationType
+import com.sky.pi.picontrolclient.OperationData
 import com.sky.pi.picontrolclient.PinData
-import com.sky.pi.picontrolclient.adapters.ItemAction
 import com.sky.pi.picontrolclient.pinDataArray
 import com.sky.pi.picontrolclient.repos.PiAccessRepo
-import com.sky.pi.picontrolclient.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
+class PinViewModel(val repo: PiAccessRepo, val pinRepo: PinRepo) : ViewModel() {
 
-    private val pinList: ArrayList<PinData> = ArrayList()
-    private var selectedPinData: PinData? = null
-
-    private val _pinListLiveData = MutableLiveData(pinList)
+    private val _pinListLiveData = MutableLiveData(arrayListOf<PinData>())
     val pinListLiveData: LiveData<ArrayList<PinData>> = _pinListLiveData
-
-    private val _showConfigDialog = SingleLiveEvent<Trigger>()
-    val showConfigDialog: LiveData<Trigger> = _showConfigDialog
 
     init {
         viewModelScope.launch {
@@ -30,26 +22,26 @@ class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
     }
 
     private fun setSwitch(
-        pinData: PinData,
-        operationType: OperationType.SWITCH
+        gpioNo: Int,
+        operationData: OperationData.SWITCH
     ) {
         viewModelScope.launch {
             repo.setPinState(
-                operationType.isOn,
-                pinData.gpioNo
+                operationData.isOn,
+                gpioNo
             )
         }
     }
 
     private fun setPwm(
-        pinData: PinData,
-        operationType: OperationType.PWM
+        gpioNo: Int,
+        operationData: OperationData.PWM
     ) {
         viewModelScope.launch {
             repo.setPwm(
-                pinData.gpioNo,
-                operationType.dutyCycle / 100,
-                operationType.frequency
+                gpioNo,
+                operationData.dutyCycle / 100,
+                operationData.frequency
             )
         }
     }
@@ -62,93 +54,53 @@ class PinViewModel(val repo: PiAccessRepo) : ViewModel() {
         repo.disconnectServer()
     }
 
-    fun setRadioSelected(radioTag: String) {
-        val pinData = selectedPinData
-            ?: throw Error("selected pin is null, really should consider immutability")
+    fun deletePin(pinNo: Int) {
+        pinRepo.deletePin(pinNo)
+        _pinListLiveData.value = pinRepo.pinList
+    }
 
-        val updatedPinData = when (radioTag) {
-            RadioSelected.INPUT.tag -> pinData.copy(operationType = OperationType.INPUT("nothing implemented yet"))
-            RadioSelected.BLINK.tag -> pinData.copy(
-                operationType = OperationType.BLINK(
-                    1,
-                    0.5f
-                )
-            )
-            RadioSelected.PWM.tag -> pinData.copy(
-                operationType = OperationType.PWM(
-                    1000,
-                    0.5f
-                )
-            )
-            RadioSelected.SWITCH.tag -> pinData.copy(
-                operationType = OperationType.SWITCH(
-                    true
-                )
-            )
-            else -> throw Error("if this error appears then something is really bad")
+    fun addPin(pinNo: Int) {
+        pinRepo.addPin(pinNo)
+        _pinListLiveData.value = pinRepo.pinList
+    }
+
+    fun updatePinData(pinNo: Int, operationData: OperationData) {
+        val pinData = pinRepo.getPin(pinNo)
+        pinRepo.replacePin(pinData.copy(operationData = operationData))
+        _pinListLiveData.value = pinRepo.pinList
+
+        when (operationData) {
+            is OperationData.INPUT -> TODO()
+            is OperationData.SWITCH -> setSwitch(pinData.gpioNo, operationData)
+            is OperationData.BLINK -> TODO()
+            is OperationData.PWM -> setPwm(pinData.gpioNo, operationData)
+            OperationData.NONE -> println("if this is printing then something is wrong")
         }
-        val oldPinDataIndex = pinList.indexOf(pinData)
+    }
+}
+
+class PinRepo {
+    val pinList: ArrayList<PinData> = ArrayList()
+
+    fun replacePin(updatedPinData: PinData) {
+        val oldPinDataIndex = pinList.indexOfFirst { it.pinNo == updatedPinData.pinNo }
         pinList.removeAt(oldPinDataIndex)
         pinList.add(oldPinDataIndex, updatedPinData)
-        updatePinData(updatedPinData)
-        updatePinListLD()
     }
 
-    private fun updatePinData(pinData: PinData) {
-        when (pinData.operationType) {
-            is OperationType.INPUT -> TODO()
-            is OperationType.SWITCH -> setSwitch(pinData, pinData.operationType)
-            is OperationType.BLINK -> TODO()
-            is OperationType.PWM -> setPwm(pinData, pinData.operationType)
-            OperationType.NONE -> println("if this is printing then something is wrong")
-        }
+    fun getPin(pinNo: Int): PinData {
+        return pinList.find { it.pinNo == pinNo } ?: throw Error("WTF")
     }
 
-    fun pinClicked(pinNo: Int, checked: Boolean) {
+    fun deletePin(pinNo: Int) {
+        val pinData = pinList.find { it.pinNo == pinNo } ?: throw Error("WTF")
+        pinList.remove(pinData)
+    }
+
+    fun addPin(pinNo: Int) {
         val foundPinData: PinData =
             pinDataArray.find { it.pinNo == pinNo } ?: throw IllegalStateException("unknown pin")
 
-        val contains = pinList.contains(foundPinData)
-        if (contains && !checked)
-            pinList.remove(foundPinData)
-        else if (!contains)
-            pinList.add(foundPinData)
-
-        updatePinListLD()
+        if (!pinList.contains(foundPinData)) pinList.add(foundPinData)
     }
-
-    private fun updatePinListLD() {
-        _pinListLiveData.value = pinList
-    }
-
-    fun setItemAction(itemAction: ItemAction, pinData: PinData) {
-        selectedPinData = pinData
-
-        when (itemAction) {
-            ItemAction.RemovePin -> {
-                pinList.remove(pinData)
-                _pinListLiveData.value = pinList
-                selectedPinData = null
-            }
-            ItemAction.ConfigurePin -> {
-                _showConfigDialog.trigger()
-            }
-            ItemAction.UpdateData -> {
-                updatePinData(pinData = pinData)
-            }
-        }
-    }
-}
-
-enum class RadioSelected(val tag: String) {
-    BLINK("radio_blinkV"),
-    SWITCH("radio_switchV"),
-    PWM("radio_pwmV"),
-    INPUT("radio_inputV");
-}
-
-object Trigger
-
-fun MutableLiveData<Trigger>.trigger() {
-    value = Trigger
 }
