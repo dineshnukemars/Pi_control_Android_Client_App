@@ -1,4 +1,4 @@
-package com.sky.pi.picontrolclient.repos
+package com.sky.pi.picontrolclient.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,14 +6,16 @@ import com.sky.backend.grpc.pi.GeneralRequest
 import com.sky.backend.grpc.pi.PiAccessGrpcKt
 import com.sky.backend.grpc.pi.PwmRequest
 import com.sky.backend.grpc.pi.SwitchState
-import com.sky.pi.picontrolclient.BoardInfo
+import com.sky.pi.picontrolclient.models.BoardInfo
+import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import java.util.concurrent.TimeUnit
 
-class PiAccessRepoImpl(private val ipAddress: String, private val port: Int) : PiAccessRepo {
+class PiAccessRepoImpl(private val ipAddress: String, private val port: Int) :
+    PiAccessRepo {
     private var grpcChannel: ManagedChannel? = null
     private var grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
 
@@ -38,7 +40,11 @@ class PiAccessRepoImpl(private val ipAddress: String, private val port: Int) : P
 
     override suspend fun getInfo(deviceId: String): BoardInfo {
         val request = generalRequest("Android")
-        return BoardInfo(getStub().getBoardInfo(request))
+        return BoardInfo(
+            getStub().getBoardInfo(
+                request
+            )
+        )
     }
 
     override suspend fun setPinState(state: Boolean, pinNo: Int): Boolean {

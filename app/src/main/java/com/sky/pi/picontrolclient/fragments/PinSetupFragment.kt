@@ -40,7 +40,7 @@ class PinSetupFragment : Fragment() {
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
 
-        viewModel.pinListLiveData.observe(this) {
+        viewModel.pinListLive.observe(this) {
             pinListAdapter.submitList(it)
             pinListAdapter.notifyDataSetChanged()
         }

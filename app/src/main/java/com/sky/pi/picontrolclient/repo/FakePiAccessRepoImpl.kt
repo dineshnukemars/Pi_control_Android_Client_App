@@ -1,13 +1,12 @@
-package com.sky.pi.picontrolclient.repos
+package com.sky.pi.picontrolclient.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.pi.picontrolclient.BoardInfo
+import com.sky.pi.picontrolclient.models.BoardInfo
+import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
 
-class FakePiAccessRepoImpl(ipAddress: String, port: Int) : PiAccessRepo {
-
+class FakePiAccessRepoImpl : PiAccessRepo {
     var commandSuccess = true
-
     private val _isServerActive = MutableLiveData(false)
     override val isServerActive: LiveData<Boolean> = _isServerActive
 

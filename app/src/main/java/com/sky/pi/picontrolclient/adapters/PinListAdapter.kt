@@ -5,7 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.sky.pi.picontrolclient.*
+import com.sky.pi.picontrolclient.doNothing
+import com.sky.pi.picontrolclient.inflateLayout
+import com.sky.pi.picontrolclient.models.OperationData
+import com.sky.pi.picontrolclient.models.Pin
+import com.sky.pi.picontrolclient.setSeekBarListener
 import kotlinx.android.synthetic.main.item_blink_card.view.*
 import kotlinx.android.synthetic.main.item_pin_title_with_options.view.*
 import kotlinx.android.synthetic.main.item_pwm_card.view.*
@@ -16,24 +20,24 @@ class PinListAdapter(
     private val onConfigurePin: (pinNo: Int) -> Unit,
     private val onUpdatePin: (pinNo: Int, operationData: OperationData) -> Unit,
     private val adapterViewType: AdapterViewType
-) : ListAdapter<PinData, PinListAdapter.PinViewHolder>(
+) : ListAdapter<Pin, PinListAdapter.PinViewHolder>(
     PinListDiffCallback()
 ) {
     inner class PinViewHolder(pinView: View) : RecyclerView.ViewHolder(pinView) {
 
         @SuppressLint("SetTextI18n")
-        fun setDataToView(pinData: PinData) {
-            val pinNo = pinData.pinNo
-            itemView.pinTextV.text = "gpio ${pinData.gpioNo} type ${pinData.gpioType}"
+        fun setDataToView(pin: Pin) {
+            val pinNo = pin.pinNo
+            itemView.pinTextV.text = "gpio ${pin.gpioNo} type ${pin.pinType}"
             itemView.deletePinImgV.setOnClickListener { onDeletePin(pinNo) }
             itemView.pinConfigureImgV.setOnClickListener { onConfigurePin(pinNo) }
-            setLayoutSpecificData(pinData, pinNo)
+            setLayoutSpecificData(pin, pinNo)
         }
 
         private fun setLayoutSpecificData(
-            pinData: PinData,
+            pin: Pin,
             pinNo: Int
-        ): Unit = when (val operationData = pinData.operationData) {
+        ): Unit = when (val operationData = pin.operationData) {
             is OperationData.INPUT -> println("not implemented yet")
             is OperationData.PWM -> listenPwmSeekBarChange(pinNo, operationData)
             is OperationData.SWITCH -> listenSwitchChange(pinNo, operationData)

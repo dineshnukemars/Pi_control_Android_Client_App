@@ -1,9 +1,11 @@
 package com.sky.pi.picontrolclient
 
 import android.app.Application
-import com.sky.pi.picontrolclient.repos.FakePiAccessRepoImpl
-import com.sky.pi.picontrolclient.repos.PiAccessRepo
-import com.sky.pi.picontrolclient.repos.PinRepo
+import com.sky.pi.picontrolclient.models.PinLayout
+import com.sky.pi.picontrolclient.repo.FakePiAccessRepoImpl
+import com.sky.pi.picontrolclient.repo.PinRepoImpl
+import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
+import com.sky.pi.picontrolclient.repo.interfaces.PinRepo
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,10 +20,13 @@ class App : Application() {
 //            serverIp,
 //            serverPort
 //        )
-            FakePiAccessRepoImpl(serverIp, serverPort)
+            FakePiAccessRepoImpl()
+        }
+        single<PinRepo> {
+            PinRepoImpl(get())
         }
         single {
-            PinRepo()
+            PinLayout()
         }
         viewModel {
             PinViewModel(get(), get())

@@ -6,8 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.sky.pi.picontrolclient.OperationData
 import com.sky.pi.picontrolclient.R
+import com.sky.pi.picontrolclient.models.OperationData
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.dialog_config_pin.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

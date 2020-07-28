@@ -1,8 +1,8 @@
 package com.sky.pi.picontrolclient.adapters
 
 import androidx.annotation.LayoutRes
-import com.sky.pi.picontrolclient.OperationData
 import com.sky.pi.picontrolclient.R
+import com.sky.pi.picontrolclient.models.OperationData
 import kotlin.reflect.KClass
 
 class AdapterViewType {

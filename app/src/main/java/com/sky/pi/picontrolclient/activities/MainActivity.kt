@@ -20,11 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         launchFragment(PinInfoFragment.getInstance())
 
-        viewMainAct_PinInfo.setOnClickListener {
-            launchFragment(PinInfoFragment.getInstance())
-        }
-        viewMainAct_PinSetup.setOnClickListener {
-            launchFragment(PinSetupFragment.getInstance())
+        bottom_navigation.setOnNavigationItemReselectedListener {
+            when (it.title) {
+                "Add Pins" -> launchFragment(PinInfoFragment.getInstance())
+                "Configure" -> launchFragment(PinSetupFragment.getInstance())
+            }
         }
     }
 
