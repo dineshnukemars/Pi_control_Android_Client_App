@@ -6,18 +6,17 @@ option java_multiple_files = true;
 
 service PiAccess{
 
-  rpc shutdown(GeneralRequest) returns (GeneralResponse);
+  rpc boardInfo (GeneralRequest) returns (BoardInfoResponse);
 
-  rpc getBoardInfo (GeneralRequest) returns (BoardInfoResponse);
+  rpc switch(SwitchState) returns (GeneralResponse);
 
-  rpc setSwitchState(SwitchState) returns (GeneralResponse);
+  rpc pwm(PwmRequest) returns (GeneralResponse);
 
-  rpc listenPinState(GeneralRequest)returns (GeneralResponse);
+  rpc blink(BlinkRequest) returns  (GeneralResponse);
 
-  rpc setPwm(PwmRequest) returns (GeneralResponse);
+  rpc listenDigitalInput(GeneralRequest) returns  (GeneralResponse);
 
-  rpc getDigitalInput(GeneralRequest)returns  (GeneralResponse);
-
+  rpc shutdownServer(GeneralRequest) returns (GeneralResponse);
 }
 
 message GeneralRequest{
@@ -45,4 +44,10 @@ message PwmRequest{
   int32 pin = 1;
   float dutyCycle = 2;
   int32 frequency = 3;
+}
+
+message BlinkRequest{
+  int32 pin = 1;
+  int32 wavePeriod = 2;
+  float highTime = 3;
 }

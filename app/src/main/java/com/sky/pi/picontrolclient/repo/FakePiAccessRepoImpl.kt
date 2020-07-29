@@ -7,17 +7,9 @@ import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
 
 class FakePiAccessRepoImpl : PiAccessRepo {
     var commandSuccess = true
-    private val _isServerActive = MutableLiveData(false)
-    override val isServerActive: LiveData<Boolean> = _isServerActive
 
     private val _isServerConnected = MutableLiveData(false)
     override val isServerConnected: LiveData<Boolean> = _isServerConnected
-
-    override suspend fun startServer(): Boolean {
-        _isServerActive.value = true
-        println("fake startServer")
-        return commandSuccess
-    }
 
     override suspend fun connectServer(): Boolean {
         _isServerConnected.value = true
@@ -25,7 +17,7 @@ class FakePiAccessRepoImpl : PiAccessRepo {
         return commandSuccess
     }
 
-    override suspend fun getInfo(deviceId: String): BoardInfo {
+    override suspend fun boardInfo(deviceId: String): BoardInfo {
         println("fake getInfo")
         return BoardInfo(
             make = "fakeMake",
@@ -36,19 +28,27 @@ class FakePiAccessRepoImpl : PiAccessRepo {
         )
     }
 
-    override suspend fun setPinState(state: Boolean, pinNo: Int): Boolean {
+    override suspend fun pinState(state: Boolean, pinNo: Int): Boolean {
         println("fake setPinState $state $pinNo")
         return commandSuccess
     }
 
-    override suspend fun setPwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
+    override suspend fun pwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
         println("fake setPwm $pin $dutyCycle $frequency")
         return commandSuccess
     }
 
+    override suspend fun blink(pin: Int, wavePeriod: Int, highTime: Float): Boolean {
+        println("fake blink $pin $wavePeriod $highTime")
+        return commandSuccess
+    }
+
+    override suspend fun listenDigitalInput(deviceId: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun shutdownServer() {
-        println("shutting down Server")
-        _isServerActive.value = false
+        println("only allowed in dev build")
     }
 
     override fun disconnectServer() {

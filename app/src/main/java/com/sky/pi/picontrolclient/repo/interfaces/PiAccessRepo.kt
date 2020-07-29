@@ -5,22 +5,21 @@ import com.sky.pi.picontrolclient.models.BoardInfo
 
 interface PiAccessRepo {
 
-    val isServerActive: LiveData<Boolean>
-
     val isServerConnected: LiveData<Boolean>
-
-    suspend fun startServer(): Boolean
 
     suspend fun connectServer(): Boolean
 
-    suspend fun getInfo(deviceId: String): BoardInfo
+    suspend fun boardInfo(deviceId: String): BoardInfo
 
-    suspend fun setPinState(state: Boolean, pinNo: Int): Boolean
+    suspend fun pinState(state: Boolean, pinNo: Int): Boolean
 
-    suspend fun setPwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean
+    suspend fun pwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean
+
+    suspend fun blink(pin: Int, wavePeriod: Int, highTime: Float): Boolean
+
+    suspend fun listenDigitalInput(deviceId: String): Boolean
 
     suspend fun shutdownServer()
 
     fun disconnectServer()
 }
-

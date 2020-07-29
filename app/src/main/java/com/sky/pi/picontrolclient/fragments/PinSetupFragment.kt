@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.AdapterViewType
+import com.sky.pi.picontrolclient.adapters.ItemActionListener
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
+import com.sky.pi.picontrolclient.models.OperationData
 import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.fragment_selected_pin_list.*
@@ -16,11 +18,25 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PinSetupFragment : Fragment() {
     private val viewModel by sharedViewModel<PinViewModel>()
+
+    private val pinListener = object : ItemActionListener {
+
+        override fun onDeletePin(pinNo: Int) {
+            viewModel::deletePin
+        }
+
+        override fun onConfigurePin(pinNo: Int) {
+            PinConfigDialogFragment.showDialog(pinNo, parentFragmentManager)
+        }
+
+        override fun onUpdatePin(pinNo: Int, operationData: OperationData) {
+            viewModel::updatePinData
+        }
+    }
+
     private val pinListAdapter: PinListAdapter by lazy {
         PinListAdapter(
-            onConfigurePin = { PinConfigDialogFragment.showDialog(it, parentFragmentManager) },
-            onUpdatePin = viewModel::updatePinData,
-            onDeletePin = viewModel::deletePin,
+            itemActionListener = pinListener,
             adapterViewType = AdapterViewType()
         )
     }

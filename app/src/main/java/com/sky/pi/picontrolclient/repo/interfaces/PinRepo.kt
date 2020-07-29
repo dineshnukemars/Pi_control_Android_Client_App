@@ -1,11 +1,13 @@
 package com.sky.pi.picontrolclient.repo.interfaces
 
+import com.sky.pi.picontrolclient.models.OperationData
 import com.sky.pi.picontrolclient.models.Pin
 
 interface PinRepo {
-    val pinList: ArrayList<Pin>
 
-    fun replacePin(updatedPin: Pin)
+    fun pinList(): List<Pin>
+
+    fun updateOperationData(pinNo: Int, operationData: OperationData): Pin
 
     fun getPin(pinNo: Int): Pin
 

@@ -2,10 +2,7 @@ package com.sky.pi.picontrolclient.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.backend.grpc.pi.GeneralRequest
-import com.sky.backend.grpc.pi.PiAccessGrpcKt
-import com.sky.backend.grpc.pi.PwmRequest
-import com.sky.backend.grpc.pi.SwitchState
+import com.sky.backend.grpc.pi.*
 import com.sky.pi.picontrolclient.models.BoardInfo
 import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
 import io.grpc.ManagedChannel
@@ -19,16 +16,8 @@ class PiAccessRepoImpl(private val ipAddress: String, private val port: Int) :
     private var grpcChannel: ManagedChannel? = null
     private var grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
 
-    private val _isServerActive = MutableLiveData(false)
-    override val isServerActive: LiveData<Boolean> = _isServerActive
-
     private val _isServerConnected = MutableLiveData(false)
     override val isServerConnected: LiveData<Boolean> = _isServerConnected
-
-    override suspend fun startServer(): Boolean {
-        _isServerActive.value = true
-        TODO("Not yet implemented")
-    }
 
     override suspend fun connectServer(): Boolean {
         val managedChannel = createChannel(ipAddress, port)
@@ -38,32 +27,44 @@ class PiAccessRepoImpl(private val ipAddress: String, private val port: Int) :
         return true
     }
 
-    override suspend fun getInfo(deviceId: String): BoardInfo {
+    override suspend fun boardInfo(deviceId: String): BoardInfo {
         val request = generalRequest("Android")
         return BoardInfo(
-            getStub().getBoardInfo(
+            getStub().boardInfo(
                 request
             )
         )
     }
 
-    override suspend fun setPinState(state: Boolean, pinNo: Int): Boolean {
-        val response = getStub().setSwitchState(switchStateRequest(isOn = state, pinNo = pinNo))
+    override suspend fun pinState(state: Boolean, pinNo: Int): Boolean {
+        val response = getStub().switch(switchStateRequest(isOn = state, pinNo = pinNo))
         return response.isCommandSuccess
     }
 
-    override suspend fun setPwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
+    override suspend fun pwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
         val newBuilder = PwmRequest.newBuilder()
         newBuilder.pin = pin
         newBuilder.dutyCycle = dutyCycle
         newBuilder.frequency = frequency
-        val pwm = getStub().setPwm(newBuilder.build())
+        val pwm = getStub().pwm(newBuilder.build())
         return pwm.isCommandSuccess
     }
 
+    override suspend fun blink(pin: Int, wavePeriod: Int, highTime: Float): Boolean {
+        val newBuilder = BlinkRequest.newBuilder()
+        newBuilder.pin = pin
+        newBuilder.highTime = highTime
+        newBuilder.wavePeriod = wavePeriod
+        val blink = getStub().blink(newBuilder.build())
+        return blink.isCommandSuccess
+    }
+
+    override suspend fun listenDigitalInput(deviceId: String): Boolean {
+        TODO("no backend implemented and flow")
+    }
+
     override suspend fun shutdownServer() {
-        val response = getStub().shutdown(generalRequest("Android"))
-        _isServerActive.value = false
+        val response = getStub().shutdownServer(generalRequest("Android"))
         println("server shutdown ${response.isCommandSuccess}")
     }
 

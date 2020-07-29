@@ -1,36 +1,40 @@
 package com.sky.pi.picontrolclient.activities
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.fragments.PinInfoFragment
 import com.sky.pi.picontrolclient.fragments.PinSetupFragment
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_pi.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
-
+class PiActivity : AppCompatActivity() {
     private val viewModel by viewModel<PinViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_pi)
+        setupUI()
+    }
 
-        launchFragment(PinInfoFragment.getInstance())
-
-        bottom_navigation.setOnNavigationItemReselectedListener {
-            when (it.title) {
-                "Add Pins" -> launchFragment(PinInfoFragment.getInstance())
-                "Configure" -> launchFragment(PinSetupFragment.getInstance())
+    private fun setupUI() {
+        showFragment(PinInfoFragment.getInstance())
+        nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.navigation_home -> showFragment(PinInfoFragment.getInstance())
+                R.id.navigation_dashboard -> showFragment(PinSetupFragment.getInstance())
+                else -> println("nothing to show")
             }
+            return@setOnNavigationItemSelectedListener true
         }
     }
 
-    private fun launchFragment(fragment: Fragment) {
+    private fun showFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.viewMain_fragmentContainer, fragment)
+            .replace(R.id.nav_host_fragment, fragment)
             .commit()
     }
 
