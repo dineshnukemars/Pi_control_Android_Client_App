@@ -22,5 +22,5 @@ class PinListAdapter(
         holder.setDataToView(getItem(position))
 
     override fun getItemViewType(position: Int): Int =
-        adapterViewType.getViewTypeIdForItem(getItem(position).operationData::class)
+        adapterViewType.getViewTypeIdForItem(getItem(position).operation::class)
 }

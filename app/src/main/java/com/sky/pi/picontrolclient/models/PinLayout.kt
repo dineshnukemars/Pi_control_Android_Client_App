@@ -2,7 +2,7 @@ package com.sky.pi.picontrolclient.models
 
 class PinLayout {
 
-    val pi4bPinList = listOf(
+    private val pi4bPinList = listOf(
         Pin(1, -1, PinType.POWER_3V),
         Pin(2, -1, PinType.POWER_5V),
         Pin(3, 2, PinType.SDA),
@@ -44,4 +44,7 @@ class PinLayout {
         Pin(39, -1, PinType.GROUND),
         Pin(40, 21, PinType.PCM_DOUT)
     )
+
+    fun pinForPinNo(pinNo: Int): Pin =
+        pi4bPinList.find { it.pinNo == pinNo } ?: throw IllegalStateException("unknown pin")
 }

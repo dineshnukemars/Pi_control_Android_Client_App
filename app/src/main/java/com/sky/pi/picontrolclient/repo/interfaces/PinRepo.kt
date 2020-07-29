@@ -1,17 +1,17 @@
 package com.sky.pi.picontrolclient.repo.interfaces
 
-import com.sky.pi.picontrolclient.models.OperationData
+import com.sky.pi.picontrolclient.models.Operation
 import com.sky.pi.picontrolclient.models.Pin
 
 interface PinRepo {
 
     fun pinList(): List<Pin>
 
-    fun updateOperationData(pinNo: Int, operationData: OperationData): Pin
+    fun updateOperation(pinNo: Int, operation: Operation): Pin
 
-    fun getPin(pinNo: Int): Pin
+    fun pinForNo(pinNo: Int): Pin
 
-    fun deletePin(pinNo: Int)
+    fun delete(pinNo: Int)
 
-    fun addPin(pinNo: Int)
+    fun add(pinNo: Int)
 }

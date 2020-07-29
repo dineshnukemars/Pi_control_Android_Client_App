@@ -40,6 +40,6 @@ class PiActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.close()
+        viewModel.disconnectServer()
     }
 }

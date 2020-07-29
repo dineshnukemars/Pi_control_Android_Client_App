@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.backend.grpc.pi.*
 import com.sky.pi.picontrolclient.models.BoardInfo
-import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
+import com.sky.pi.picontrolclient.repo.interfaces.PiRepo
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import java.util.concurrent.TimeUnit
 
-class PiAccessRepoImpl(private val ipAddress: String, private val port: Int) :
-    PiAccessRepo {
+class PiRepoImpl(private val ipAddress: String, private val port: Int) :
+    PiRepo {
     private var grpcChannel: ManagedChannel? = null
     private var grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
 

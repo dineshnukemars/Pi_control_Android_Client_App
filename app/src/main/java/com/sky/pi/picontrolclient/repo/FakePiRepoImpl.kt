@@ -3,9 +3,9 @@ package com.sky.pi.picontrolclient.repo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.pi.picontrolclient.models.BoardInfo
-import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
+import com.sky.pi.picontrolclient.repo.interfaces.PiRepo
 
-class FakePiAccessRepoImpl : PiAccessRepo {
+class FakePiRepoImpl : PiRepo {
     var commandSuccess = true
 
     private val _isServerConnected = MutableLiveData(false)

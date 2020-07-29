@@ -10,7 +10,7 @@ import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.AdapterViewType
 import com.sky.pi.picontrolclient.adapters.ItemActionListener
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
-import com.sky.pi.picontrolclient.models.OperationData
+import com.sky.pi.picontrolclient.models.Operation
 import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.fragment_selected_pin_list.*
@@ -22,15 +22,15 @@ class PinSetupFragment : Fragment() {
     private val pinListener = object : ItemActionListener {
 
         override fun onDeletePin(pinNo: Int) {
-            viewModel::deletePin
+            viewModel.deletePin(pinNo)
         }
 
         override fun onConfigurePin(pinNo: Int) {
             PinConfigDialogFragment.showDialog(pinNo, parentFragmentManager)
         }
 
-        override fun onUpdatePin(pinNo: Int, operationData: OperationData) {
-            viewModel::updatePinData
+        override fun onUpdatePin(pinNo: Int, operation: Operation) {
+            viewModel.updatePin(pinNo, operation)
         }
     }
 
@@ -56,7 +56,7 @@ class PinSetupFragment : Fragment() {
         pinListV.adapter = pinListAdapter
         pinListV.layoutManager = LinearLayoutManager(requireActivity())
 
-        viewModel.pinListLive.observe(this) {
+        viewModel.pinListLD.observe(this) {
             pinListAdapter.submitList(it)
             pinListAdapter.notifyDataSetChanged()
         }

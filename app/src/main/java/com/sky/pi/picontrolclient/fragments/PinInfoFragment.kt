@@ -31,7 +31,7 @@ class PinInfoFragment : Fragment() {
     private fun setupCheckBoxes(view: View) {
         view_pinRadioContainer1.children.forEach(::setListenerToCheckBox)
         view_pinRadioContainer2.children.forEach(::setListenerToCheckBox)
-        viewModel.pinListLive.observe(this) { pinList ->
+        viewModel.pinListLD.observe(this) { pinList ->
             setCheckBoxesStateFromPinList(pinList, view)
         }
     }

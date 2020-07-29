@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.sky.pi.picontrolclient.R
-import com.sky.pi.picontrolclient.models.OperationData
+import com.sky.pi.picontrolclient.models.Operation
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.dialog_config_pin.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -29,10 +29,10 @@ class PinConfigDialogFragment : DialogFragment() {
         setView(view)
         setPositiveButton("Apply") { _, _ ->
             when (view.pinTypeRadioGroupV.checkedRadioButtonId) {
-                R.id.blinkRadioBtnV -> viewModel.updatePinData(pinNo, OperationData.BLINK())
-                R.id.inputRadioBtnV -> viewModel.updatePinData(pinNo, OperationData.INPUT())
-                R.id.pwmRadioBtnV -> viewModel.updatePinData(pinNo, OperationData.PWM())
-                R.id.switchRadioBtnV -> viewModel.updatePinData(pinNo, OperationData.SWITCH())
+                R.id.blinkRadioBtnV -> viewModel.updatePin(pinNo, Operation.BLINK())
+                R.id.inputRadioBtnV -> viewModel.updatePin(pinNo, Operation.INPUT())
+                R.id.pwmRadioBtnV -> viewModel.updatePin(pinNo, Operation.PWM())
+                R.id.switchRadioBtnV -> viewModel.updatePin(pinNo, Operation.SWITCH())
             }
         }
         setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }

@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.pi.picontrolclient.models.OperationData
+import com.sky.pi.picontrolclient.models.Operation
 import com.sky.pi.picontrolclient.models.Pin
-import com.sky.pi.picontrolclient.repo.interfaces.PiAccessRepo
+import com.sky.pi.picontrolclient.repo.interfaces.PiRepo
 import com.sky.pi.picontrolclient.repo.interfaces.PinRepo
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class PinViewModel(private val piRepo: PiAccessRepo, private val pinRepo: PinRepo) :
+class PinViewModel(private val piRepo: PiRepo, private val pinRepo: PinRepo) :
     ViewModel() {
 
-    private val _pinListLiveData = MutableLiveData(listOf<Pin>())
-    val pinListLive: LiveData<List<Pin>> = _pinListLiveData
+    private val _pinListLD = MutableLiveData(listOf<Pin>())
+    val pinListLD: LiveData<List<Pin>> = _pinListLD
 
     init {
         viewModelScope.launch {
@@ -23,64 +23,53 @@ class PinViewModel(private val piRepo: PiAccessRepo, private val pinRepo: PinRep
         }
     }
 
-    private fun switch(
-        gpioNo: Int,
-        operationData: OperationData.SWITCH
-    ): Job = viewModelScope.launch {
-        piRepo.pinState(
-            state = operationData.isOn,
-            pinNo = gpioNo
-        )
-    }
-
-    private fun pwm(
-        gpioNo: Int,
-        operationData: OperationData.PWM
-    ): Job = viewModelScope.launch {
-        piRepo.pwm(
-            pin = gpioNo,
-            dutyCycle = operationData.dutyCycle,
-            frequency = operationData.frequency
-        )
-    }
-
-    private fun blink(
-        pinData: Pin,
-        operationData: OperationData.BLINK
-    ): Job = viewModelScope.launch {
-        piRepo.blink(
-            pinData.gpioNo,
-            operationData.wavePeriod,
-            operationData.highTime
-        )
-    }
-
     fun shutdownServer(): Job = viewModelScope.launch {
         piRepo.shutdownServer()
     }
 
-    fun close(): Unit = piRepo.disconnectServer()
+    fun disconnectServer(): Unit = piRepo.disconnectServer()
 
     fun deletePin(pinNo: Int) {
-        pinRepo.deletePin(pinNo)
-        _pinListLiveData.value = pinRepo.pinList()
+        pinRepo.delete(pinNo)
+        _pinListLD.value = pinRepo.pinList()
     }
 
     fun addPin(pinNo: Int) {
-        pinRepo.addPin(pinNo)
-        _pinListLiveData.value = pinRepo.pinList()
+        pinRepo.add(pinNo)
+        _pinListLD.value = pinRepo.pinList()
     }
 
-    fun updatePinData(pinNo: Int, operationData: OperationData) {
-        val pinData = pinRepo.updateOperationData(pinNo, operationData)
-        _pinListLiveData.value = pinRepo.pinList()
+    fun updatePin(pinNo: Int, operation: Operation) {
+        viewModelScope.launch {
+            val pin = pinRepo.pinForNo(pinNo)
 
-        when (operationData) {
-            is OperationData.INPUT -> TODO()
-            is OperationData.SWITCH -> switch(pinData.gpioNo, operationData)
-            is OperationData.BLINK -> blink(pinData, operationData)
-            is OperationData.PWM -> pwm(pinData.gpioNo, operationData)
-            OperationData.NONE -> println("if this is printing then something is wrong")
+            val isSuccess = when (operation) {
+                is Operation.INPUT -> TODO()
+                is Operation.SWITCH ->
+                    piRepo.pinState(
+                        state = operation.isOn,
+                        pinNo = pin.gpioNo
+                    )
+                is Operation.BLINK ->
+                    piRepo.blink(
+                        pin.gpioNo,
+                        operation.wavePeriod,
+                        operation.highTime
+                    )
+
+                is Operation.PWM ->
+                    piRepo.pwm(
+                        pin = pin.gpioNo,
+                        dutyCycle = operation.dutyCycle,
+                        frequency = operation.frequency
+                    )
+                Operation.NONE -> {
+                    println("if this is printing then something is wrong")
+                    false
+                }
+            }
+            if (isSuccess) pinRepo.updateOperation(pinNo, operation)
+            _pinListLD.value = pinRepo.pinList()
         }
     }
 }

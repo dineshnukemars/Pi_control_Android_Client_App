@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.sky.pi.picontrolclient.doNothing
-import com.sky.pi.picontrolclient.models.OperationData
+import com.sky.pi.picontrolclient.models.Operation
 import com.sky.pi.picontrolclient.models.Pin
 import com.sky.pi.picontrolclient.setSeekBarListener
 import kotlinx.android.synthetic.main.item_blink_card.view.*
@@ -29,44 +29,50 @@ class PinViewHolder(
     private fun setLayoutSpecificData(
         pin: Pin,
         pinNo: Int
-    ): Unit = when (val operationData = pin.operationData) {
-        is OperationData.INPUT -> println("not implemented yet")
-        is OperationData.PWM -> setupPwmV(pinNo, operationData)
-        is OperationData.SWITCH -> setupSwitchView(pinNo, operationData)
-        is OperationData.BLINK -> setupBlinkView(pinNo, operationData)
-        is OperationData.NONE -> doNothing()
+    ): Unit = when (val operationData = pin.operation) {
+        is Operation.INPUT -> println("not implemented yet")
+        is Operation.PWM -> setupPwmV(pinNo, operationData)
+        is Operation.SWITCH -> setupSwitchView(pinNo, operationData)
+        is Operation.BLINK -> setupBlinkView(pinNo, operationData)
+        is Operation.NONE -> doNothing()
     }
 
     private fun setupBlinkView(
         pinNo: Int,
-        operationData: OperationData.BLINK
-    ) {
-        itemView.onTimeSeekBarV.progress = operationData.highTime.toInt()
-        itemView.onTimeSeekBarV.setSeekBarListener {
+        operation: Operation.BLINK
+    ): Unit = with(itemView.onTimeSeekBarV) {
+        progress = operation.highTime.toInt()
+        setSeekBarListener {
             itemActionListener.onUpdatePin(
-                pinNo,
-                operationData.copy(highTime = it.progress.toFloat())
+                pinNo = pinNo,
+                operation = operation.copy(highTime = progress.toFloat())
             )
         }
     }
 
     private fun setupSwitchView(
         pinNo: Int,
-        operationData: OperationData.SWITCH
-    ) {
-        itemView.pinSwitchV.isChecked = operationData.isOn
-        itemView.pinSwitchV.setOnCheckedChangeListener { _, isChecked ->
-            itemActionListener.onUpdatePin(pinNo, operationData.copy(isOn = isChecked))
+        operation: Operation.SWITCH
+    ): Unit = with(itemView.pinSwitchV) {
+        isChecked = operation.isOn
+        setOnClickListener {
+            itemActionListener.onUpdatePin(
+                pinNo = pinNo,
+                operation = operation.copy(isOn = isChecked)
+            )
         }
     }
 
     private fun setupPwmV(
         pinNo: Int,
-        operationData: OperationData.PWM
-    ) {
-        itemView.pwmSeekBarV.progress = (operationData.dutyCycle * 100f).toInt()
-        itemView.pwmSeekBarV.setSeekBarListener {
-            itemActionListener.onUpdatePin(pinNo, operationData.copy(dutyCycle = it.progress.toFloat() / 100))
+        operation: Operation.PWM
+    ): Unit = with(itemView.pwmSeekBarV) {
+        progress = (operation.dutyCycle * 100f).toInt()
+        setSeekBarListener {
+            itemActionListener.onUpdatePin(
+                pinNo = pinNo,
+                operation = operation.copy(dutyCycle = progress.toFloat() / 100)
+            )
         }
     }
 }
