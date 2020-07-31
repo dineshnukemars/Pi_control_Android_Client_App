@@ -3,7 +3,7 @@ package com.sky.pi.repo.impl
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.backend.grpc.pi.*
-import com.sky.pi.repo.interfaces.PiRepo
+import com.sky.pi.repo.interfaces.IPiRepo
 import com.sky.pi.repo.models.BoardInfo
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
@@ -12,7 +12,7 @@ import kotlinx.coroutines.asExecutor
 import java.util.concurrent.TimeUnit
 
 class PiRepoImpl(private val ipAddress: String, private val port: Int) :
-    PiRepo {
+    IPiRepo {
     private var grpcChannel: ManagedChannel? = null
     private var grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
 

@@ -2,11 +2,11 @@ package com.sky.pi.picontrolclient
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
-import com.sky.pi.picontrolclient.repo.FakePiRepoImpl
-import com.sky.pi.picontrolclient.repo.PinRepoImpl
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
+import com.sky.pi.repo.impl.FakePiRepoImpl
+import com.sky.pi.repo.impl.PinLayout
+import com.sky.pi.repo.impl.PinRepoImpl
 import com.sky.pi.repo.models.Operation
-import com.sky.pi.repo.models.PinLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import org.junit.After

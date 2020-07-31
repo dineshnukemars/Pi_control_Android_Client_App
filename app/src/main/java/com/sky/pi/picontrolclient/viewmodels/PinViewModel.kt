@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.pi.repo.interfaces.PiRepo
-import com.sky.pi.repo.interfaces.PinRepo
+import com.sky.pi.repo.interfaces.IPiRepo
+import com.sky.pi.repo.interfaces.IPinRepo
 import com.sky.pi.repo.models.Operation
 import com.sky.pi.repo.models.Pin
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class PinViewModel(
-    private val piRepo: PiRepo,
-    private val pinRepo: PinRepo
+    private val piRepo: IPiRepo,
+    private val pinRepo: IPinRepo
 ) : ViewModel() {
 
     private val _pinListLD = MutableLiveData(listOf<Pin>())

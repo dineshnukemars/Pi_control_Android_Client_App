@@ -3,7 +3,7 @@ package com.sky.pi.repo.interfaces
 import com.sky.pi.repo.models.Operation
 import com.sky.pi.repo.models.Pin
 
-interface PinRepo {
+interface IPinRepo {
 
     fun pinList(): List<Pin>
 

@@ -3,7 +3,7 @@ package com.sky.pi.repo.interfaces
 import androidx.lifecycle.LiveData
 import com.sky.pi.repo.models.BoardInfo
 
-interface PiRepo {
+interface IPiRepo {
 
     val isServerConnected: LiveData<Boolean>
 

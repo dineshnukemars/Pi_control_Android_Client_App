@@ -2,10 +2,10 @@ package com.sky.pi.repo.impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.pi.repo.interfaces.PiRepo
+import com.sky.pi.repo.interfaces.IPiRepo
 import com.sky.pi.repo.models.BoardInfo
 
-class FakePiRepoImpl : PiRepo {
+class FakePiRepoImpl : IPiRepo {
     var commandSuccess = true
 
     private val _isServerConnected = MutableLiveData<Boolean>()

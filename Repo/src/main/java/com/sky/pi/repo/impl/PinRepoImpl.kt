@@ -1,11 +1,11 @@
 package com.sky.pi.repo.impl
 
-import com.sky.pi.repo.interfaces.PinRepo
+import com.sky.pi.repo.interfaces.IPinLayout
+import com.sky.pi.repo.interfaces.IPinRepo
 import com.sky.pi.repo.models.Operation
 import com.sky.pi.repo.models.Pin
-import com.sky.pi.repo.models.PinLayout
 
-class PinRepoImpl(private val pinLayout: PinLayout) : PinRepo {
+class PinRepoImpl(private val pinLayout: IPinLayout) : IPinRepo {
     private val pinList: ArrayList<Pin> = ArrayList()
 
     override fun pinList(): List<Pin> = pinList
