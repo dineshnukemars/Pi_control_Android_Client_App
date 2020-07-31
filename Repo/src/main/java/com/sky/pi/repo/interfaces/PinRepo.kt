@@ -1,7 +1,7 @@
-package com.sky.pi.picontrolclient.repo.interfaces
+package com.sky.pi.repo.interfaces
 
-import com.sky.pi.picontrolclient.models.Operation
-import com.sky.pi.picontrolclient.models.Pin
+import com.sky.pi.repo.models.Operation
+import com.sky.pi.repo.models.Pin
 
 interface PinRepo {
 

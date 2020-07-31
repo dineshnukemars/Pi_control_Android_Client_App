@@ -1,9 +1,9 @@
-package com.sky.pi.picontrolclient.repo
+package com.sky.pi.repo.impl
 
-import com.sky.pi.picontrolclient.models.Operation
-import com.sky.pi.picontrolclient.models.Pin
-import com.sky.pi.picontrolclient.models.PinLayout
-import com.sky.pi.picontrolclient.repo.interfaces.PinRepo
+import com.sky.pi.repo.interfaces.PinRepo
+import com.sky.pi.repo.models.Operation
+import com.sky.pi.repo.models.Pin
+import com.sky.pi.repo.models.PinLayout
 
 class PinRepoImpl(private val pinLayout: PinLayout) : PinRepo {
     private val pinList: ArrayList<Pin> = ArrayList()

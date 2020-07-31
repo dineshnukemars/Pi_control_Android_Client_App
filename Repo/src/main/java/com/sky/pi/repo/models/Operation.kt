@@ -1,4 +1,4 @@
-package com.sky.pi.picontrolclient.models
+package com.sky.pi.repo.models
 
 sealed class Operation {
     object NONE : Operation()

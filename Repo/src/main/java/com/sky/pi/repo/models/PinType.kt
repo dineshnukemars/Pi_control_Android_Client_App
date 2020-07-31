@@ -1,4 +1,4 @@
-package com.sky.pi.picontrolclient.models
+package com.sky.pi.repo.models
 
 enum class PinType {
     GROUND,

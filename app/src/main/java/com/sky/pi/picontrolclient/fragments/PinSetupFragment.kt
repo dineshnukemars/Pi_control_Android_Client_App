@@ -10,9 +10,9 @@ import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapters.AdapterViewType
 import com.sky.pi.picontrolclient.adapters.ItemActionListener
 import com.sky.pi.picontrolclient.adapters.PinListAdapter
-import com.sky.pi.picontrolclient.models.Operation
 import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
+import com.sky.pi.repo.models.Operation
 import kotlinx.android.synthetic.main.fragment_selected_pin_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

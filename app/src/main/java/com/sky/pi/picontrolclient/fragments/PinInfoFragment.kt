@@ -8,9 +8,9 @@ import android.widget.CheckBox
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import com.sky.pi.picontrolclient.R
-import com.sky.pi.picontrolclient.models.Pin
 import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
+import com.sky.pi.repo.models.Pin
 import kotlinx.android.synthetic.main.fragment_board_pin_layout.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -43,8 +43,8 @@ class PinInfoFragment : Fragment() {
         view.findViewWithTag<CheckBox>(data.pinNo.toString())?.isChecked = true
     }
 
-    private fun setListenerToCheckBox(containerView: View?) {
-        val checkBox = containerView as CheckBox
+    private fun setListenerToCheckBox(childView: View) {
+        val checkBox = childView as CheckBox
         val pinNo = checkBox.tag.toString().toInt()
         checkBox.setOnClickListener {
             if (checkBox.isChecked) viewModel.addPin(pinNo)

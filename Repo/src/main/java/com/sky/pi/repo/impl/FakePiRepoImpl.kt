@@ -1,14 +1,14 @@
-package com.sky.pi.picontrolclient.repo
+package com.sky.pi.repo.impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.pi.picontrolclient.models.BoardInfo
-import com.sky.pi.picontrolclient.repo.interfaces.PiRepo
+import com.sky.pi.repo.interfaces.PiRepo
+import com.sky.pi.repo.models.BoardInfo
 
 class FakePiRepoImpl : PiRepo {
     var commandSuccess = true
 
-    private val _isServerConnected = MutableLiveData(false)
+    private val _isServerConnected = MutableLiveData<Boolean>()
     override val isServerConnected: LiveData<Boolean> = _isServerConnected
 
     override suspend fun connectServer(): Boolean {

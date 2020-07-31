@@ -1,2 +1,3 @@
+include ':Repo'
 include ':app'
 rootProject.name = "Pi_control_Android_Client_App"

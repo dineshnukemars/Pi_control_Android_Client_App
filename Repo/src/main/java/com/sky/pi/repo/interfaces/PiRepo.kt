@@ -1,7 +1,7 @@
-package com.sky.pi.picontrolclient.repo.interfaces
+package com.sky.pi.repo.interfaces
 
 import androidx.lifecycle.LiveData
-import com.sky.pi.picontrolclient.models.BoardInfo
+import com.sky.pi.repo.models.BoardInfo
 
 interface PiRepo {
 
