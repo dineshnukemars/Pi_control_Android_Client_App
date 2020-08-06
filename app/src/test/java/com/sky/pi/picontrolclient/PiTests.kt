@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import com.sky.pi.repo.impl.FakePiRepoImpl
-import com.sky.pi.repo.impl.PinLayout
 import com.sky.pi.repo.impl.PinRepoImpl
+import com.sky.pi.repo.impl.pi4bPinList
 import com.sky.pi.repo.models.Operation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -31,14 +31,13 @@ internal class PiTests {
 
     private lateinit var viewModel: PinViewModel
 
-    private val pinLayout: PinLayout = PinLayout()
     private val piRepo = FakePiRepoImpl()
 
     @Before
     fun setup() {
         viewModel = PinViewModel(
             piRepo = piRepo,
-            pinRepo = PinRepoImpl(pinLayout)
+            pinRepo = PinRepoImpl(pi4bPinList)
         )
     }
 
@@ -53,7 +52,7 @@ internal class PiTests {
         val pinNo = 6
         viewModel.addPin(pinNo)
         add1To5Pins()
-        val pin = pinLayout.pinForPinNo(pinNo)
+        val pin = pi4bPinList.find { it.pinNo == pinNo }
         val pinList = viewModel.pinListLD.value
 
         assertEquals(6, pinList?.size)

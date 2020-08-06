@@ -3,10 +3,9 @@ package com.sky.pi.picontrolclient
 import android.app.Application
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import com.sky.pi.repo.impl.FakePiRepoImpl
-import com.sky.pi.repo.impl.PinLayout
 import com.sky.pi.repo.impl.PinRepoImpl
+import com.sky.pi.repo.impl.pi4bPinList
 import com.sky.pi.repo.interfaces.IPiRepo
-import com.sky.pi.repo.interfaces.IPinLayout
 import com.sky.pi.repo.interfaces.IPinRepo
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -24,10 +23,7 @@ class PiApplication : Application() {
             FakePiRepoImpl()
         }
         single<IPinRepo> {
-            PinRepoImpl(get())
-        }
-        single<IPinLayout> {
-            PinLayout()
+            PinRepoImpl(pi4bPinList)
         }
         viewModel {
             PinViewModel(get(), get())
