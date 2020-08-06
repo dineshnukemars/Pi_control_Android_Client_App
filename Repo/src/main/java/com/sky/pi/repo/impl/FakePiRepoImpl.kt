@@ -17,16 +17,13 @@ class FakePiRepoImpl : IPiRepo {
         return commandSuccess
     }
 
-    override suspend fun boardInfo(deviceId: String): BoardInfo {
-        println("fake getInfo")
-        return BoardInfo(
-            make = "fakeMake",
-            model = "fakeModel",
-            memory = 8000,
-            libraryPath = "/fakePath/fakeFile",
-            adcVRef = 0.25f
-        )
-    }
+    override suspend fun boardInfo(deviceId: String) = BoardInfo(
+        make = "fakeMake",
+        model = "fakeModel",
+        memory = 8000,
+        libraryPath = "/fakePath/fakeFile",
+        adcVRef = 0.25f
+    )
 
     override suspend fun pinState(state: Boolean, pinNo: Int): Boolean {
         println("fake setPinState $state $pinNo")
