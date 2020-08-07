@@ -6,6 +6,7 @@ import com.sky.pi.repo.impl.FakePiRepoImpl
 import com.sky.pi.repo.impl.PinRepoImpl
 import com.sky.pi.repo.impl.pi4bPinList
 import com.sky.pi.repo.models.Operation
+import com.sky.pi.repo.models.Pin
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import org.junit.jupiter.api.*
@@ -47,7 +48,10 @@ internal class PiTests {
             val pinList = viewModel.pinListLD.value
 
             assertEquals(6, pinList?.size)
-            assertEquals(pi4bPinList.find { it.pinNo == pinNo }, pinList?.find { it.pinNo == pinNo })
+            assertEquals(
+                findPinForNumber(pi4bPinList, pinNo),
+                findPinForNumber(pinList, pinNo)
+            )
         }
 
         @Test
@@ -67,8 +71,13 @@ internal class PiTests {
             val pinList = viewModel.pinListLD.value
 
             assertEquals(5, pinList?.size)
-            assertEquals(null, pinList?.find { it.pinNo == pinNo })
+            assertEquals(null, findPinForNumber(pinList, pinNo))
         }
+
+        private fun findPinForNumber(
+            pinList: List<Pin>?,
+            pinNo: Int
+        ) = pinList?.find { it.pinNo == pinNo }
 
         private fun add1To5Pins() {
             viewModel.addPin(1)
@@ -81,55 +90,170 @@ internal class PiTests {
 
 
     @Nested
-    @DisplayName("Change Pin-operation value")
-    inner class PinOperations {
+    @DisplayName("Change Pin Operation")
+    inner class ChangePinType {
+        val pinNo = 6
 
-        @Test
-        fun `change Switch pin ON & OFF, then Operation Switch is ON & OFF`() {
-            val pinNo = 6
+        private fun findPinOperationOnLiveData() =
+            viewModel.pinListLD.value?.find { it.pinNo == pinNo }?.operation
+
+        @BeforeEach
+        fun setup() {
             viewModel.addPin(pinNo)
             piRepo.commandSuccess = true
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
-
-            piRepo.commandSuccess = false
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(false))
-            val operation = viewModel.pinListLD.value?.find { it.pinNo == pinNo }?.operation
-
-            assertEquals(Operation.SWITCH(true), operation)
         }
 
-        @Test
-        fun `Command success False and change Switch pin ON & OFF, then Operation Switch is ON & OFF`() {
-            val pinNo = 6
-            viewModel.addPin(pinNo)
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
+        @Nested
+        inner class ApiSuccess {
+            @Test
+            fun `None to Switch`() {
+                val expected = Operation.SWITCH(true)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
 
-            piRepo.commandSuccess = false
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(false))
-            val operation1 = viewModel.pinListLD.value?.find { it.pinNo == pinNo }?.operation
+                assertEquals(expected, findPinOperationOnLiveData())
+            }
 
-            assertEquals(Operation.SWITCH(true), operation1)
+            @Test
+            fun `Switch to Pwm`() {
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
 
-            piRepo.commandSuccess = true
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(false))
+                val expected = Operation.PWM(1000)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
 
 
-            piRepo.commandSuccess = false
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
-            val operation2 = viewModel.pinListLD.value?.find { it.pinNo == pinNo }?.operation
+                assertEquals(expected, findPinOperationOnLiveData())
+            }
 
-            assertEquals(Operation.SWITCH(false), operation2)
+            @Test
+            fun `Switch ON & OFF`() {
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
+                assertEquals(
+                    Operation.SWITCH(true),
+                    findPinOperationOnLiveData()
+                )
+
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(false))
+                assertEquals(
+                    Operation.SWITCH(false),
+                    findPinOperationOnLiveData()
+                )
+            }
+
+
+            @Test
+            fun `Pwm change dutyCycle`() {
+                var expected = Operation.PWM(dutyCycle = 0.6f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+
+                expected = Operation.PWM(dutyCycle = 0.15f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+
+                expected = Operation.PWM(dutyCycle = 1f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+            }
+
+            @Test
+            fun `Blink change values`() {
+                var expected = Operation.BLINK(wavePeriod = 10, highTime = 0.6f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+
+                expected = Operation.BLINK(wavePeriod = 5, highTime = 0.6f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+            }
+
         }
 
-        @Test
-        fun `change PWM progress, then Operation PWM duty cycle is progress`() {
-            val pinNo = 6
-            val dutyCycle = 0.3f
-            viewModel.addPin(pinNo)
-            viewModel.updatePin(pinNo = pinNo, operation = Operation.PWM(dutyCycle = dutyCycle))
-            val operation = viewModel.pinListLD.value?.find { it.pinNo == pinNo }?.operation
+        @Nested
+        inner class ApiFailure {
 
-            assertEquals(Operation.PWM(dutyCycle = dutyCycle), operation)
+            @Test
+            fun `None to Switch`() {
+                piRepo.commandSuccess = false
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
+
+                assertEquals(Operation.NONE, findPinOperationOnLiveData())
+            }
+
+            @Test
+            fun `Switch to Pwm`() {
+                piRepo.commandSuccess = true
+                val expected = Operation.SWITCH(true)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+
+                piRepo.commandSuccess = false
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.PWM(1000))
+
+                assertEquals(expected, findPinOperationOnLiveData())
+            }
+
+            @Test
+            fun `Switch ON & OFF`() {
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
+                assertEquals(
+                    Operation.SWITCH(true),
+                    findPinOperationOnLiveData()
+                )
+
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(false))
+                assertEquals(
+                    Operation.SWITCH(false),
+                    findPinOperationOnLiveData()
+                )
+            }
+
+
+            @Test
+            fun `Pwm change dutyCycle`() {
+                piRepo.commandSuccess = true
+                val expected = Operation.PWM(dutyCycle = 0.6f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+
+                piRepo.commandSuccess = false
+                viewModel.updatePin(pinNo = pinNo, operation = Operation.PWM(dutyCycle = 0.3f))
+
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+            }
+
+            @Test
+            fun `Blink change values`() {
+                piRepo.commandSuccess = true
+                val expected = Operation.BLINK(wavePeriod = 10, highTime = 0.6f)
+                viewModel.updatePin(pinNo = pinNo, operation = expected)
+
+                piRepo.commandSuccess = false
+                viewModel.updatePin(
+                    pinNo = pinNo,
+                    operation = Operation.BLINK(wavePeriod = 5, highTime = 0.8f)
+                )
+
+                assertEquals(
+                    expected,
+                    findPinOperationOnLiveData()
+                )
+            }
         }
     }
 }
