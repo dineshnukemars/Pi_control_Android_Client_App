@@ -8,7 +8,7 @@ import android.widget.CheckBox
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import com.sky.pi.picontrolclient.R
-import com.sky.pi.picontrolclient.observe
+import com.sky.pi.picontrolclient.livedata.observeIfNotNull
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import com.sky.pi.repo.models.Pin
 import kotlinx.android.synthetic.main.fragment_board_pin_layout.*
@@ -31,7 +31,7 @@ class PinInfoFragment : Fragment() {
     private fun setupCheckBoxes(view: View) {
         view_pinRadioContainer1.children.forEach(::setListenerToCheckBox)
         view_pinRadioContainer2.children.forEach(::setListenerToCheckBox)
-        viewModel.pinListLD.observe(this) { pinList ->
+        viewModel.pinListLD.observeIfNotNull(this) { pinList ->
             setCheckBoxesStateFromPinList(pinList, view)
         }
     }

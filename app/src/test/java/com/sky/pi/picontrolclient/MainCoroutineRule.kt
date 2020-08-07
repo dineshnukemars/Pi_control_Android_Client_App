@@ -4,9 +4,7 @@ import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.internal.AssumptionViolatedException
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.BeforeEachCallback
@@ -15,7 +13,7 @@ import org.junit.jupiter.api.extension.TestExecutionExceptionHandler
 import org.junit.runners.model.MultipleFailureException
 
 @ExperimentalCoroutinesApi
-class MainCoroutineRule : AfterEachCallback, BeforeEachCallback {
+open class MainCoroutineRule : AfterEachCallback, BeforeEachCallback {
     private var _testDispatcher: TestCoroutineDispatcher? = null
     private val testDispatcher: TestCoroutineDispatcher
         get() = _testDispatcher ?: error("dispatcher is not initiated")
@@ -31,6 +29,9 @@ class MainCoroutineRule : AfterEachCallback, BeforeEachCallback {
         _testDispatcher = null
     }
 
+    operator fun invoke(block: suspend TestCoroutineScope.() -> Unit) {
+        testDispatcher.runBlockingTest(block)
+    }
 }
 
 class LiveDataTestRule : AfterEachCallback, BeforeEachCallback, TestExecutionExceptionHandler {

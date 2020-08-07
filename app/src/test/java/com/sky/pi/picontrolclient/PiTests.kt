@@ -12,11 +12,16 @@ import kotlinx.coroutines.cancel
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.RegisterExtension
 
 
 @ExperimentalCoroutinesApi
-@ExtendWith(MainCoroutineRule::class, LiveDataTestRule::class)
+@ExtendWith(LiveDataTestRule::class)
 internal class PiTests {
+
+    @JvmField
+    @RegisterExtension
+    val coroutineRule = MainCoroutineRule()
 
     private lateinit var viewModel: PinViewModel
 
@@ -97,6 +102,9 @@ internal class PiTests {
         private fun findPinOperationOnLiveData() =
             viewModel.pinListLD.value?.find { it.pinNo == pinNo }?.operation
 
+        private fun actualToastMessage() =
+            viewModel.toastLD.value
+
         @BeforeEach
         fun setup() {
             viewModel.addPin(pinNo)
@@ -115,6 +123,7 @@ internal class PiTests {
 
             @Test
             fun `Switch to Pwm`() {
+
                 viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
 
                 val expected = Operation.PWM(1000)
@@ -192,6 +201,7 @@ internal class PiTests {
                 viewModel.updatePin(pinNo = pinNo, operation = Operation.SWITCH(true))
 
                 assertEquals(Operation.NONE, findPinOperationOnLiveData())
+                assertEquals("Something went Wrong", actualToastMessage())
             }
 
             @Test

@@ -1,4 +1,4 @@
-package com.sky.pi.picontrolclient.adapters
+package com.sky.pi.picontrolclient.adapter
 
 import com.sky.pi.repo.models.Operation
 

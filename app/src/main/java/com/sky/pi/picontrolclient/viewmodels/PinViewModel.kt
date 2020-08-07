@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.pi.picontrolclient.SingleLiveEvent
+import com.sky.pi.picontrolclient.livedata.SingleLiveEvent
 import com.sky.pi.repo.interfaces.IPiRepo
 import com.sky.pi.repo.interfaces.IPinRepo
 import com.sky.pi.repo.models.Operation
@@ -19,7 +19,8 @@ class PinViewModel(
     private val _pinListLD = MutableLiveData(listOf<Pin>())
     val pinListLD: LiveData<List<Pin>> = _pinListLD
 
-    private val _toastLD = SingleLiveEvent<String>()
+    private val _toastLD =
+        SingleLiveEvent<String>()
     val toastLD: LiveData<String> = _toastLD
 
     init {

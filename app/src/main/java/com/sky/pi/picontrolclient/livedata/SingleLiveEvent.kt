@@ -1,4 +1,4 @@
-package com.sky.pi.picontrolclient
+package com.sky.pi.picontrolclient.livedata
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

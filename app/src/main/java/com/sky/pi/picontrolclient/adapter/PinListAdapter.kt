@@ -1,8 +1,8 @@
-package com.sky.pi.picontrolclient.adapters
+package com.sky.pi.picontrolclient.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.sky.pi.picontrolclient.inflateLayout
 import com.sky.pi.repo.models.Pin
 
 class PinListAdapter(
@@ -13,14 +13,17 @@ class PinListAdapter(
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PinViewHolder =
-        PinViewHolder(
-            itemActionListener = itemActionListener,
-            pinView = parent.inflateLayout(adapterViewType.getLayoutIdForViewTypeId(viewType))
-        )
+        PinViewHolder(itemActionListener, pinLayoutView(parent, viewType))
 
     override fun onBindViewHolder(holder: PinViewHolder, position: Int) =
         holder.setDataToView(getItem(position))
 
     override fun getItemViewType(position: Int): Int =
         adapterViewType.getViewTypeIdForItem(getItem(position).operation::class)
+
+    private fun pinLayoutView(
+        parent: ViewGroup,
+        viewType: Int
+    ) = LayoutInflater.from(parent.context)
+        .inflate(adapterViewType.getLayoutIdForViewTypeId(viewType), parent, false)
 }

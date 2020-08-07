@@ -1,10 +1,9 @@
-package com.sky.pi.picontrolclient.adapters
+package com.sky.pi.picontrolclient.adapter
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
-import com.sky.pi.picontrolclient.doNothing
-import com.sky.pi.picontrolclient.setSeekBarListener
 import com.sky.pi.repo.models.Operation
 import com.sky.pi.repo.models.Pin
 import kotlinx.android.synthetic.main.item_blink_card.view.*
@@ -74,5 +73,21 @@ class PinViewHolder(
                 operation = operation.copy(dutyCycle = progress.toFloat() / 100)
             )
         }
+    }
+
+    private fun SeekBar.setSeekBarListener(onStopTrack: (seekBar: SeekBar) -> Unit) {
+        setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(
+                seekBar: SeekBar,
+                progress: Int,
+                fromUser: Boolean
+            ) = Unit
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                onStopTrack(seekBar)
+            }
+        })
     }
 }

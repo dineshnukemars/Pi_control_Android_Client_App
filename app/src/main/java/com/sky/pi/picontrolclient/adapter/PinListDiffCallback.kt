@@ -1,4 +1,4 @@
-package com.sky.pi.picontrolclient.adapters
+package com.sky.pi.picontrolclient.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.sky.pi.repo.models.Pin

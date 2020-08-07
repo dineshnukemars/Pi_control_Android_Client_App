@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.fragments.PinInfoFragment
 import com.sky.pi.picontrolclient.fragments.PinSetupFragment
-import com.sky.pi.picontrolclient.observe
+import com.sky.pi.picontrolclient.livedata.observeIfNotNull
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.activity_pi.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +20,7 @@ class PiActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pi)
         setupUI()
-        viewModel.toastLD.observe(this) { message ->
+        viewModel.toastLD.observeIfNotNull(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
