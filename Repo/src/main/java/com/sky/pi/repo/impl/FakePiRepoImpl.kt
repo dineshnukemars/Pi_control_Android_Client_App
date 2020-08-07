@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sky.pi.repo.interfaces.IPiRepo
 import com.sky.pi.repo.models.BoardInfo
+import com.sky.pi.repo.models.Operation
 
 class FakePiRepoImpl : IPiRepo {
     var commandSuccess = true
@@ -25,18 +26,18 @@ class FakePiRepoImpl : IPiRepo {
         adcVRef = 0.25f
     )
 
-    override suspend fun pinState(state: Boolean, pinNo: Int): Boolean {
-        println("fake setPinState $state $pinNo")
+    override suspend fun pinState(pinNo: Int, operation: Operation.SWITCH): Boolean {
+        println("fake setPinState ${operation.isOn} $pinNo")
         return commandSuccess
     }
 
-    override suspend fun pwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
-        println("fake setPwm $pin $dutyCycle $frequency")
+    override suspend fun pwm(pin: Int, operation: Operation.PWM): Boolean {
+        println("fake setPwm $pin ${operation.dutyCycle} ${operation.frequency}")
         return commandSuccess
     }
 
-    override suspend fun blink(pin: Int, wavePeriod: Int, highTime: Float): Boolean {
-        println("fake blink $pin $wavePeriod $highTime")
+    override suspend fun blink(pin: Int, operation: Operation.BLINK): Boolean {
+        println("fake blink $pin ${operation.wavePeriod} ${operation.highTime}")
         return commandSuccess
     }
 

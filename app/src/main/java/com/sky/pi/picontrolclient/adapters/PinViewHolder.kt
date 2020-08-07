@@ -34,7 +34,7 @@ class PinViewHolder(
         is Operation.PWM -> setupPwmV(pinNo, operationData)
         is Operation.SWITCH -> setupSwitchView(pinNo, operationData)
         is Operation.BLINK -> setupBlinkView(pinNo, operationData)
-        is Operation.NONE -> doNothing()
+        is Operation.NONE -> Unit
     }
 
     private fun setupBlinkView(

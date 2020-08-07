@@ -2,11 +2,13 @@ package com.sky.pi.picontrolclient.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.fragments.PinInfoFragment
 import com.sky.pi.picontrolclient.fragments.PinSetupFragment
+import com.sky.pi.picontrolclient.observe
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import kotlinx.android.synthetic.main.activity_pi.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -18,6 +20,9 @@ class PiActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pi)
         setupUI()
+        viewModel.toastLD.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupUI() {

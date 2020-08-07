@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.sky.backend.grpc.pi.*
 import com.sky.pi.repo.interfaces.IPiRepo
 import com.sky.pi.repo.models.BoardInfo
+import com.sky.pi.repo.models.Operation
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
@@ -36,25 +37,25 @@ class PiRepoImpl(private val ipAddress: String, private val port: Int) :
         )
     }
 
-    override suspend fun pinState(state: Boolean, pinNo: Int): Boolean {
-        val response = getStub().switch(switchStateRequest(isOn = state, pinNo = pinNo))
+    override suspend fun pinState(pinNo: Int, operation: Operation.SWITCH): Boolean {
+        val response = getStub().switch(switchStateRequest(isOn = operation.isOn, pinNo = pinNo))
         return response.isCommandSuccess
     }
 
-    override suspend fun pwm(pin: Int, dutyCycle: Float, frequency: Int): Boolean {
+    override suspend fun pwm(pin: Int, operation: Operation.PWM): Boolean {
         val newBuilder = PwmRequest.newBuilder()
         newBuilder.pin = pin
-        newBuilder.dutyCycle = dutyCycle
-        newBuilder.frequency = frequency
+        newBuilder.dutyCycle = operation.dutyCycle
+        newBuilder.frequency = operation.frequency
         val pwm = getStub().pwm(newBuilder.build())
         return pwm.isCommandSuccess
     }
 
-    override suspend fun blink(pin: Int, wavePeriod: Int, highTime: Float): Boolean {
+    override suspend fun blink(pin: Int, operation: Operation.BLINK): Boolean {
         val newBuilder = BlinkRequest.newBuilder()
         newBuilder.pin = pin
-        newBuilder.highTime = highTime
-        newBuilder.wavePeriod = wavePeriod
+        newBuilder.highTime = operation.highTime
+        newBuilder.wavePeriod = operation.wavePeriod
         val blink = getStub().blink(newBuilder.build())
         return blink.isCommandSuccess
     }

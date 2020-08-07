@@ -13,6 +13,8 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class PiApplication : Application() {
+    val serverIp = "192.168.0.16"
+    val serverPort = 50053
 
     private val myModule = module {
         single<IPiRepo> {
