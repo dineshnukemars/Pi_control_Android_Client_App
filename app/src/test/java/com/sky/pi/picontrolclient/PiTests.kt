@@ -4,13 +4,14 @@ import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import com.sky.pi.repo.impl.FakePiRepoImpl
 import com.sky.pi.repo.impl.PinRepoImpl
+import com.sky.pi.repo.impl.findPinElseThrowError
 import com.sky.pi.repo.impl.pi4bPinList
 import com.sky.pi.repo.models.Operation
-import com.sky.pi.repo.models.Pin
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.RegisterExtension
 
@@ -50,18 +51,18 @@ internal class PiTests {
             val pinNo = 6
             add1To5Pins()
             viewModel.addPin(pinNo)
-            val pinList = viewModel.pinListLD.value
+            val pinList = viewModel.pinListLD.value ?: throw Error()
 
-            assertEquals(6, pinList?.size)
+            assertEquals(6, pinList.size)
             assertEquals(
-                findPinForNumber(pi4bPinList, pinNo),
-                findPinForNumber(pinList, pinNo)
+                findPinElseThrowError(pi4bPinList, pinNo),
+                findPinElseThrowError(pinList, pinNo)
             )
         }
 
         @Test
         fun `add duplicate pin throws Error`() {
-            Assertions.assertThrows(Error::class.java) {
+            assertThrows(Error::class.java) {
                 viewModel.addPin(1)
                 viewModel.addPin(1)
             }
@@ -73,16 +74,13 @@ internal class PiTests {
             viewModel.addPin(pinNo)
             add1To5Pins()
             viewModel.deletePin(pinNo)
-            val pinList = viewModel.pinListLD.value
+            val pinList = viewModel.pinListLD.value ?: throw Error()
 
-            assertEquals(5, pinList?.size)
-            assertEquals(null, findPinForNumber(pinList, pinNo))
+            assertEquals(5, pinList.size)
+            assertThrows(Error::class.java) {
+                findPinElseThrowError(pinList, pinNo)
+            }
         }
-
-        private fun findPinForNumber(
-            pinList: List<Pin>?,
-            pinNo: Int
-        ) = pinList?.find { it.pinNo == pinNo }
 
         private fun add1To5Pins() {
             viewModel.addPin(1)

@@ -19,8 +19,7 @@ class PinViewModel(
     private val _pinListLD = MutableLiveData(listOf<Pin>())
     val pinListLD: LiveData<List<Pin>> = _pinListLD
 
-    private val _toastLD =
-        SingleLiveEvent<String>()
+    private val _toastLD = SingleLiveEvent<String>()
     val toastLD: LiveData<String> = _toastLD
 
     init {
@@ -41,7 +40,7 @@ class PinViewModel(
 
     fun updatePin(pinNo: Int, operation: Operation) {
         viewModelScope.launch {
-            val isSuccess = updatePiRepo(operation, pinRepo.pinForNo(pinNo))
+            val isSuccess = updatePiRepo(operation, pinRepo.findPin(pinNo))
             if (isSuccess) {
                 pinRepo.updateOperation(pinNo, operation)
                 _pinListLD.value = pinRepo.pinList()

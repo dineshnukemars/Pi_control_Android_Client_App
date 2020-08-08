@@ -7,9 +7,9 @@ interface IPinRepo {
 
     fun pinList(): List<Pin>
 
-    fun updateOperation(pinNo: Int, operation: Operation): Pin
+    fun updateOperation(pinNo: Int, operation: Operation)
 
-    fun pinForNo(pinNo: Int): Pin
+    fun findPin(pinNo: Int): Pin
 
     fun delete(pinNo: Int)
 

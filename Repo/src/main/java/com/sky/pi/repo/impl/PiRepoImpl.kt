@@ -2,20 +2,20 @@ package com.sky.pi.repo.impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.backend.grpc.pi.*
+import com.sky.backend.grpc.pi.PiAccessGrpcKt
+import com.sky.pi.repo.*
 import com.sky.pi.repo.interfaces.IPiRepo
 import com.sky.pi.repo.models.BoardInfo
 import com.sky.pi.repo.models.Operation
 import io.grpc.ManagedChannel
-import io.grpc.ManagedChannelBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
 import java.util.concurrent.TimeUnit
 
 class PiRepoImpl(private val ipAddress: String, private val port: Int) :
     IPiRepo {
     private var grpcChannel: ManagedChannel? = null
-    private var grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
+    private var _grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
+    private val grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub
+        get() = _grpcStub ?: throw Error("Stub is null")
 
     private val _isServerConnected = MutableLiveData<Boolean>()
     override val isServerConnected: LiveData<Boolean> = _isServerConnected
@@ -23,40 +23,30 @@ class PiRepoImpl(private val ipAddress: String, private val port: Int) :
     override suspend fun connectServer(): Boolean {
         val managedChannel = createChannel(ipAddress, port)
         grpcChannel = managedChannel
-        grpcStub = PiAccessGrpcKt.PiAccessCoroutineStub(managedChannel)
+        _grpcStub = PiAccessGrpcKt.PiAccessCoroutineStub(managedChannel)
         _isServerConnected.value = true
         return true
     }
 
     override suspend fun boardInfo(deviceId: String): BoardInfo {
         val request = generalRequest("Android")
-        return BoardInfo(
-            getStub().boardInfo(
-                request
-            )
-        )
+        return BoardInfo(grpcStub.boardInfo(request))
     }
 
     override suspend fun pinState(pinNo: Int, operation: Operation.SWITCH): Boolean {
-        val response = getStub().switch(switchStateRequest(isOn = operation.isOn, pinNo = pinNo))
+        val response = grpcStub.switch(switchStateRequest(isOn = operation.isOn, pinNo = pinNo))
         return response.isCommandSuccess
     }
 
     override suspend fun pwm(pin: Int, operation: Operation.PWM): Boolean {
-        val newBuilder = PwmRequest.newBuilder()
-        newBuilder.pin = pin
-        newBuilder.dutyCycle = operation.dutyCycle
-        newBuilder.frequency = operation.frequency
-        val pwm = getStub().pwm(newBuilder.build())
+        val request = pwmRequest(pin, operation)
+        val pwm = grpcStub.pwm(request)
         return pwm.isCommandSuccess
     }
 
     override suspend fun blink(pin: Int, operation: Operation.BLINK): Boolean {
-        val newBuilder = BlinkRequest.newBuilder()
-        newBuilder.pin = pin
-        newBuilder.highTime = operation.highTime
-        newBuilder.wavePeriod = operation.wavePeriod
-        val blink = getStub().blink(newBuilder.build())
+        val request = blinkRequest(pin, operation)
+        val blink = grpcStub.blink(request)
         return blink.isCommandSuccess
     }
 
@@ -65,7 +55,7 @@ class PiRepoImpl(private val ipAddress: String, private val port: Int) :
     }
 
     override suspend fun shutdownServer() {
-        val response = getStub().shutdownServer(generalRequest("Android"))
+        val response = grpcStub.shutdownServer(generalRequest("Android"))
         println("server shutdown ${response.isCommandSuccess}")
     }
 
@@ -75,32 +65,4 @@ class PiRepoImpl(private val ipAddress: String, private val port: Int) :
         _isServerConnected.value = false
         println("connection to server closed")
     }
-
-    private fun getStub(): PiAccessGrpcKt.PiAccessCoroutineStub {
-        return grpcStub ?: throw Error("Stub is null")
-    }
-
-    private fun generalRequest(deviceId: String): GeneralRequest {
-        return GeneralRequest
-            .newBuilder()
-            .setDeviceID(deviceId)
-            .build()
-    }
-
-    private fun switchStateRequest(isOn: Boolean, pinNo: Int): SwitchState {
-        val builder = SwitchState.newBuilder()
-        builder.isOn = isOn
-        builder.pinNo = pinNo
-        return builder.build()
-    }
-
-    private fun createChannel(ipAddress: String, port: Int): ManagedChannel {
-        return ManagedChannelBuilder
-            .forAddress(ipAddress, port)
-            .usePlaintext()
-            .executor(Dispatchers.Default.asExecutor())
-            .build() ?: throw Error("Could not create Channel")
-    }
 }
-
-
