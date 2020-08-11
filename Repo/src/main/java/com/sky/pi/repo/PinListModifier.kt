@@ -1,4 +1,4 @@
-package com.sky.pi.repo.impl
+package com.sky.pi.repo
 
 import com.sky.pi.repo.models.Operation
 import com.sky.pi.repo.models.Pin

@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import com.sky.pi.repo.impl.FakePiRepoImpl
 import com.sky.pi.repo.impl.PinRepoImpl
-import com.sky.pi.repo.impl.pi4bPinList
 import com.sky.pi.repo.models.Operation
+import com.sky.pi.repo.pi4bPinList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import org.junit.jupiter.api.*
