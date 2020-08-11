@@ -30,9 +30,7 @@ class PinRepoImpl(private val boardPinList: List<Pin>) : IPinRepo {
         list.find { it.pinNo == pinNo } ?: throw Error("WTF")
 
     private fun addPinToList(boardPinList: List<Pin>, list: List<Pin>, pinNo: Int): List<Pin> {
-        val pin = list.find { it.pinNo == pinNo }
-        if (pin != null) throw Error("WTF")
-
+        ifAlreadyExistThenThrow(list, pinNo)
         val mutableList = list.toMutableList()
         mutableList.add(findElseThrow(boardPinList, pinNo))
         return mutableList
@@ -47,4 +45,12 @@ class PinRepoImpl(private val boardPinList: List<Pin>) : IPinRepo {
                 newItem = findElseThrow(list, pinNo).copy(operation = operation),
                 predicate = { it.pinNo == pinNo })
             .toList()
+
+    private fun ifAlreadyExistThenThrow(
+        list: List<Pin>,
+        pinNo: Int
+    ) {
+        val pin = list.find { it.pinNo == pinNo }
+        if (pin != null) throw Error("WTF")
+    }
 }
