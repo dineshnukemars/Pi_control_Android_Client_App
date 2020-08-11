@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import com.sky.pi.board.models.Pin
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.livedata.observeIfNotNull
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import com.sky.pi.repo.models.Pin
 import kotlinx.android.synthetic.main.fragment_board_pin_layout.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

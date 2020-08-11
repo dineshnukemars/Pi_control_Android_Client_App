@@ -1,6 +1,6 @@
 package com.sky.pi.picontrolclient.adapter
 
-import com.sky.pi.repo.models.Operation
+import com.sky.pi.board.models.Operation
 
 interface ItemActionListener {
     fun onDeletePin(pinNo: Int)

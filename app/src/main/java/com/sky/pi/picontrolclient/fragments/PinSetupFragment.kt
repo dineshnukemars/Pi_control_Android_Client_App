@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sky.pi.board.models.Operation
 import com.sky.pi.picontrolclient.R
 import com.sky.pi.picontrolclient.adapter.AdapterViewType
 import com.sky.pi.picontrolclient.adapter.ItemActionListener
 import com.sky.pi.picontrolclient.adapter.PinListAdapter
 import com.sky.pi.picontrolclient.livedata.observeIfNotNull
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import com.sky.pi.repo.models.Operation
 import kotlinx.android.synthetic.main.fragment_selected_pin_list.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

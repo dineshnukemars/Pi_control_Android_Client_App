@@ -1,7 +1,7 @@
 package com.sky.pi.picontrolclient.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.sky.pi.repo.models.Pin
+import com.sky.pi.board.models.Pin
 
 class PinListDiffCallback : DiffUtil.ItemCallback<Pin>() {
     override fun areItemsTheSame(oldItem: Pin, newItem: Pin): Boolean {

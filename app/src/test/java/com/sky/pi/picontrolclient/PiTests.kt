@@ -1,11 +1,11 @@
 package com.sky.pi.picontrolclient
 
 import androidx.lifecycle.viewModelScope
+import com.sky.pi.board.models.Operation
+import com.sky.pi.board.models.pi4bPinList
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import com.sky.pi.repo.impl.FakePiRepoImpl
-import com.sky.pi.repo.impl.PinRepoImpl
-import com.sky.pi.repo.models.Operation
-import com.sky.pi.repo.pi4bPinList
+import com.sky.pi.repo.board.layout.PinRepoImpl
+import com.sky.pi.repo.board.network.PiFakeRepoImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import org.junit.jupiter.api.*
@@ -25,7 +25,7 @@ internal class PiTests {
 
     private lateinit var viewModel: PinViewModel
 
-    private val piRepo = FakePiRepoImpl()
+    private val piRepo = PiFakeRepoImpl()
 
     @BeforeEach
     fun setup() {

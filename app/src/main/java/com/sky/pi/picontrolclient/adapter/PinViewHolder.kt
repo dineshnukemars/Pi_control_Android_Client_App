@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
-import com.sky.pi.repo.models.Operation
-import com.sky.pi.repo.models.Pin
+import com.sky.pi.board.models.Operation
+import com.sky.pi.board.models.Pin
 import kotlinx.android.synthetic.main.item_blink_card.view.*
 import kotlinx.android.synthetic.main.item_pin_title_with_options.view.*
 import kotlinx.android.synthetic.main.item_pwm_card.view.*

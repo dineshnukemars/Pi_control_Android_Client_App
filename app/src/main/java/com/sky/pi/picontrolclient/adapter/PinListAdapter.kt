@@ -3,7 +3,7 @@ package com.sky.pi.picontrolclient.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.sky.pi.repo.models.Pin
+import com.sky.pi.board.models.Pin
 
 class PinListAdapter(
     private val itemActionListener: ItemActionListener,
