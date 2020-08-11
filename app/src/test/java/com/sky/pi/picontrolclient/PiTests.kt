@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.sky.pi.picontrolclient.viewmodels.PinViewModel
 import com.sky.pi.repo.impl.FakePiRepoImpl
 import com.sky.pi.repo.impl.PinRepoImpl
-import com.sky.pi.repo.impl.findPinElseThrowError
 import com.sky.pi.repo.impl.pi4bPinList
 import com.sky.pi.repo.models.Operation
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -55,8 +54,8 @@ internal class PiTests {
 
             assertEquals(6, pinList.size)
             assertEquals(
-                findPinElseThrowError(pi4bPinList, pinNo),
-                findPinElseThrowError(pinList, pinNo)
+                pi4bPinList.find { it.pinNo == pinNo },
+                pinList.find { it.pinNo == pinNo }
             )
         }
 
@@ -77,9 +76,7 @@ internal class PiTests {
             val pinList = viewModel.pinListLD.value ?: throw Error()
 
             assertEquals(5, pinList.size)
-            assertThrows(Error::class.java) {
-                findPinElseThrowError(pinList, pinNo)
-            }
+            assertEquals(null, pinList.find { it.pinNo == pinNo })
         }
 
         private fun add1To5Pins() {

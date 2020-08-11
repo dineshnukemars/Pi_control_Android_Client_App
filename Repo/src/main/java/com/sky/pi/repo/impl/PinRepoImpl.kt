@@ -16,7 +16,7 @@ class PinRepoImpl(private val boardPinList: List<Pin>) : IPinRepo {
         pinList = updatePinOnList(pinList, pinNo, operation)
     }
 
-    override fun findPin(pinNo: Int): Pin = findPinElseThrowError(pinList, pinNo)
+    override fun findPin(pinNo: Int): Pin = findElseThrow(pinList, pinNo)
 
     override fun delete(pinNo: Int) {
         pinList = deletePinFromList(pinList, pinNo)
@@ -25,40 +25,26 @@ class PinRepoImpl(private val boardPinList: List<Pin>) : IPinRepo {
     override fun add(pinNo: Int) {
         pinList = addPinToList(boardPinList, pinList, pinNo)
     }
-}
 
-fun findPinElseThrowError(list: List<Pin>, pinNo: Int): Pin {
-    return list.find { it.pinNo == pinNo } ?: throw Error("WTF")
-}
+    private fun findElseThrow(list: List<Pin>, pinNo: Int): Pin =
+        list.find { it.pinNo == pinNo } ?: throw Error("WTF")
 
-fun addPinToList(boardPinList: List<Pin>, list: List<Pin>, pinNo: Int): List<Pin> {
-    val arrayList = ArrayList(list)
-    val pin = findPinElseThrowError(boardPinList, pinNo)
-    if (!arrayList.contains(pin)) arrayList.add(pin)
-    else throw Error("Already added")
-    return arrayList
-}
+    private fun addPinToList(boardPinList: List<Pin>, list: List<Pin>, pinNo: Int): List<Pin> {
+        val pin = list.find { it.pinNo == pinNo }
+        if (pin != null) throw Error("WTF")
 
-fun deletePinFromList(list: List<Pin>, pinNo: Int): List<Pin> {
-    val pin = findPinElseThrowError(list, pinNo)
-    val arrayList = ArrayList(list)
-    arrayList.remove(pin)
-    return arrayList
-}
+        val mutableList = list.toMutableList()
+        mutableList.add(findElseThrow(boardPinList, pinNo))
+        return mutableList
+    }
 
-fun updatePin(list: List<Pin>, pinNo: Int, operation: Operation): Pin {
-    return findPinElseThrowError(list, pinNo).copy(operation = operation)
-}
+    private fun deletePinFromList(list: List<Pin>, pinNo: Int): List<Pin> =
+        list.asSequence().filterNot { it.pinNo == pinNo }.toList()
 
-fun replacePinOnList(list: List<Pin>, pin: Pin): List<Pin> {
-    val oldPinIndex = list.indexOfFirst { it.pinNo == pin.pinNo }
-    val arrayList = ArrayList(list)
-    arrayList.removeAt(oldPinIndex)
-    arrayList.add(oldPinIndex, pin)
-    return arrayList
-}
-
-fun updatePinOnList(list: List<Pin>, pinNo: Int, operation: Operation): List<Pin> {
-    val updatedPin = updatePin(list, pinNo, operation)
-    return replacePinOnList(list, updatedPin)
+    private fun updatePinOnList(list: List<Pin>, pinNo: Int, operation: Operation): List<Pin> =
+        list.asSequence()
+            .findAndUpdate(
+                newItem = findElseThrow(list, pinNo).copy(operation = operation),
+                predicate = { it.pinNo == pinNo })
+            .toList()
 }
