@@ -1,6 +1,5 @@
-include ':boardModels'
-include ':pinCollections'
-include ':pinRepo'
-include ':raspiRepo'
-include ':app'
 rootProject.name = "Pi_control_Android_Client_App"
+include ':app'
+include ':ui'
+include ':coreLibs'
+include ':piController'

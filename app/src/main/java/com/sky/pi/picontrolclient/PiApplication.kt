@@ -1,12 +1,12 @@
 package com.sky.pi.picontrolclient
 
 import android.app.Application
-import com.sky.pi.board.models.pi4bPinList
-import com.sky.pi.picontrolclient.viewmodels.PinViewModel
-import com.sky.pi.repo.board.layout.PinRepo
-import com.sky.pi.repo.board.layout.PinRepoImpl
-import com.sky.pi.repo.board.network.PiFakeRepoImpl
-import com.sky.pi.repo.board.network.PiRepo
+import com.sky.pi.client.controller.pinrepo.PinRepo
+import com.sky.pi.client.controller.pinrepo.PinRepoImpl
+import com.sky.pi.client.controller.pirepo.PiFakeRepoImpl
+import com.sky.pi.client.controller.pirepo.PiRepo
+import com.sky.pi.client.controller.viewmodels.PinViewModel
+import com.sky.pi.client.libs.models.pi4bPinList
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
