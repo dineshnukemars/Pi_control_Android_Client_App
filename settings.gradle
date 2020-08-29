@@ -1,5 +1,6 @@
 rootProject.name = "Pi_control_Android_Client_App"
 include ':app'
-include ':ui'
+include ':ui-xml'
 include ':coreLibs'
 include ':piController'
+include ':ui-compose'
