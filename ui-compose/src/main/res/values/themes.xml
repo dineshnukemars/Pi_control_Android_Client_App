@@ -1,0 +1,11 @@
+<resources>
+
+    <style name="Theme.Pi_control_Android_Client_App.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Pi_control_Android_Client_App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Pi_control_Android_Client_App.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
