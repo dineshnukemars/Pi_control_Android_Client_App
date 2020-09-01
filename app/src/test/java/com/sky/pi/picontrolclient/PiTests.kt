@@ -2,7 +2,7 @@ package com.sky.pi.picontrolclient
 
 import androidx.lifecycle.viewModelScope
 import com.sky.pi.client.controller.pinrepo.PinRepoImpl
-import com.sky.pi.client.controller.pirepo.PiFakeRepoImpl
+import com.sky.pi.client.controller.pirepo.RaspiFakeRepoImpl
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.pi4bPinList
@@ -25,7 +25,7 @@ internal class PiTests {
 
     private lateinit var viewModel: PinViewModel
 
-    private val piRepo = PiFakeRepoImpl()
+    private val piRepo = RaspiFakeRepoImpl()
 
     @BeforeEach
     fun setup() {

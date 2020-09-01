@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sky.pi.client.controller.pinrepo.PinRepo
-import com.sky.pi.client.controller.pirepo.PiRepo
+import com.sky.pi.client.controller.pirepo.RaspiRepo
 import com.sky.pi.client.libs.livedata.SingleLiveEvent
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
+import com.sky.pi.client.libs.models.pi4bPinList
 import kotlinx.coroutines.launch
 
 class PinViewModel(
-    private val piRepo: PiRepo,
+    private val raspiRepo: RaspiRepo,
     private val pinRepo: PinRepo
 ) : ViewModel() {
 
@@ -24,9 +25,11 @@ class PinViewModel(
 
     init {
         viewModelScope.launch {
-            piRepo.boardInfo("Android Client")
+            raspiRepo.boardInfo("Android Client")
         }
     }
+
+    fun getBoardPins(): List<Pin> = pi4bPinList
 
     fun addPin(pinNo: Int) {
         pinRepo.add(pinNo)
@@ -50,11 +53,11 @@ class PinViewModel(
         }
     }
 
-    fun disconnectServer(): Unit = piRepo.disconnectServer()
+    fun disconnectServer(): Unit = raspiRepo.disconnectServer()
 
     fun shutdownServer() {
         viewModelScope.launch {
-            piRepo.shutdownServer()
+            raspiRepo.shutdownServer()
         }
     }
 
@@ -63,9 +66,9 @@ class PinViewModel(
         pin: Pin
     ): Boolean = when (operation) {
         is Operation.INPUT -> TODO()
-        is Operation.SWITCH -> piRepo.pinState(pin.gpioNo, operation)
-        is Operation.BLINK -> piRepo.blink(pin.gpioNo, operation)
-        is Operation.PWM -> piRepo.pwm(pin.gpioNo, operation)
+        is Operation.SWITCH -> raspiRepo.pinState(pin.gpioNo, operation)
+        is Operation.BLINK -> raspiRepo.blink(pin.gpioNo, operation)
+        is Operation.PWM -> raspiRepo.pwm(pin.gpioNo, operation)
         Operation.NONE -> false
     }
 }

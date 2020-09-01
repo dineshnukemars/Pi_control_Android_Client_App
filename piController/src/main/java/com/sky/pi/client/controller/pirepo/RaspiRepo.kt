@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.sky.pi.client.controller.pirepo.entities.BoardInfo
 import com.sky.pi.client.libs.models.Operation
 
-interface PiRepo {
+interface RaspiRepo {
 
     val isServerConnected: LiveData<Boolean>
 

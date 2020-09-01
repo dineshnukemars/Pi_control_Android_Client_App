@@ -6,7 +6,13 @@
         <activity
             android:name="com.sky.pi.client.ui.compose.LandingPage"
             android:label="@string/title_activity_landing_page"
-            android:theme="@style/Theme.Pi_control_Android_Client_App.NoActionBar"></activity>
+            android:theme="@style/App_theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

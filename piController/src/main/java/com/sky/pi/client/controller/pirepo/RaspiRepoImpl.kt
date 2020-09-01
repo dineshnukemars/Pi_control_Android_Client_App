@@ -13,8 +13,8 @@ import com.sky.pi.client.libs.models.Operation
 import io.grpc.ManagedChannel
 import java.util.concurrent.TimeUnit
 
-class PiRepoImpl(private val ipAddress: String, private val port: Int) :
-    PiRepo {
+class RaspiRepoImpl(private val ipAddress: String, private val port: Int) :
+    RaspiRepo {
     private var grpcChannel: ManagedChannel? = null
     private var _grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
     private val grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub

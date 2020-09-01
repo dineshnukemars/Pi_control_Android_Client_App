@@ -28,15 +28,17 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun Pi_control_Android_Client_AppTheme(
+fun landingPage(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+//    val colors = if (darkTheme) {
+//        DarkColorPalette
+//    } else {
+//        LightColorPalette
+//    }
+
+    val colors =LightColorPalette
 
     MaterialTheme(
         colors = colors,

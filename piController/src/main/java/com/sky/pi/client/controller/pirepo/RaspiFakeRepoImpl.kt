@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.sky.pi.client.controller.pirepo.entities.BoardInfo
 import com.sky.pi.client.libs.models.Operation
 
-class PiFakeRepoImpl : PiRepo {
+class RaspiFakeRepoImpl : RaspiRepo {
     var commandSuccess = true
 
     private val _isServerConnected = MutableLiveData<Boolean>()

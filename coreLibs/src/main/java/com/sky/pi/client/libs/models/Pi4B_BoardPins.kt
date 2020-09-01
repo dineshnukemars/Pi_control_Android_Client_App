@@ -2,203 +2,243 @@ package com.sky.pi.client.libs.models
 
 val pi4bPinList = listOf(
     Pin(
-        1,
-        -1,
-        PinType.POWER_3V
+        pinNo = 1,
+        gpioNo = -1,
+        pinType = PinType.POWER_3V,
+        isLeft = true
     ),
     Pin(
-        2,
-        -1,
-        PinType.POWER_5V
+        pinNo = 2,
+        gpioNo = -1,
+        pinType = PinType.POWER_5V,
+        isLeft = false
     ),
     Pin(
-        3,
-        2,
-        PinType.SDA
+        pinNo = 3,
+        gpioNo = 2,
+        pinType = PinType.SDA,
+        isLeft = true
     ),
     Pin(
-        4,
-        -1,
-        PinType.POWER_5V
+        pinNo = 4,
+        gpioNo = -1,
+        pinType = PinType.POWER_5V,
+        isLeft = false
     ),
     Pin(
-        5,
-        3,
-        PinType.SCL
+        pinNo = 5,
+        gpioNo = 3,
+        pinType = PinType.SCL,
+        isLeft = true
     ),
     Pin(
-        6,
-        -1,
-        PinType.GROUND
+        pinNo = 6,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = false
     ),
     Pin(
-        7,
-        4,
-        PinType.GPCLK0
+        pinNo = 7,
+        gpioNo = 4,
+        pinType = PinType.GPCLK0,
+        isLeft = true
     ),
     Pin(
-        8,
-        14,
-        PinType.TXD
+        pinNo = 8,
+        gpioNo = 14,
+        pinType = PinType.TXD,
+        isLeft = false
     ),
     Pin(
-        9,
-        -1,
-        PinType.GROUND
+        pinNo = 9,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = true
     ),
     Pin(
-        10,
-        15,
-        PinType.RXD
+        pinNo = 10,
+        gpioNo = 15,
+        pinType = PinType.RXD,
+        isLeft = false
     ),
     Pin(
-        11,
-        17,
-        PinType.NONE
+        pinNo = 11,
+        gpioNo = 17,
+        pinType = PinType.NONE,
+        isLeft = true
     ),
     Pin(
-        12,
-        18,
-        PinType.PCM_CLK
+        pinNo = 12,
+        gpioNo = 18,
+        pinType = PinType.PCM_CLK,
+        isLeft = false
     ),
     Pin(
-        13,
-        27,
-        PinType.NONE
+        pinNo = 13,
+        gpioNo = 27,
+        pinType = PinType.NONE,
+        isLeft = true
     ),
     Pin(
-        14,
-        -1,
-        PinType.GROUND
+        pinNo = 14,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = false
     ),
     Pin(
-        15,
-        22,
-        PinType.NONE
+        pinNo = 15,
+        gpioNo = 22,
+        pinType = PinType.NONE,
+        isLeft = true
     ),
     Pin(
-        16,
-        23,
-        PinType.NONE
+        pinNo = 16,
+        gpioNo = 23,
+        pinType = PinType.NONE,
+        isLeft = false
     ),
     Pin(
-        17,
-        -1,
-        PinType.POWER_3V
+        pinNo = 17,
+        gpioNo = -1,
+        pinType = PinType.POWER_3V,
+        isLeft = true
     ),
     Pin(
-        18,
-        24,
-        PinType.NONE
+        pinNo = 18,
+        gpioNo = 24,
+        pinType = PinType.NONE,
+        isLeft = false
     ),
     Pin(
-        19,
-        10,
-        PinType.MOSI
+        pinNo = 19,
+        gpioNo = 10,
+        pinType = PinType.MOSI,
+        isLeft = true
     ),
     Pin(
-        20,
-        -1,
-        PinType.GROUND
+        pinNo = 20,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = false
     ),
     Pin(
-        21,
-        9,
-        PinType.MISO
+        pinNo = 21,
+        gpioNo = 9,
+        pinType = PinType.MISO,
+        isLeft = true
     ),
     Pin(
-        22,
-        25,
-        PinType.NONE
+        pinNo = 22,
+        gpioNo = 25,
+        pinType = PinType.NONE,
+        isLeft = false
     ),
     Pin(
-        23,
-        11,
-        PinType.SCLK
+        pinNo = 23,
+        gpioNo = 11,
+        pinType = PinType.SCLK,
+        isLeft = true
     ),
     Pin(
-        24,
-        8,
-        PinType.CE
+        pinNo = 24,
+        gpioNo = 8,
+        pinType = PinType.CE,
+        isLeft = false
     ),
     Pin(
-        25,
-        -1,
-        PinType.GROUND
+        pinNo = 25,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = true
     ),
     Pin(
-        26,
-        7,
-        PinType.CE
+        pinNo = 26,
+        gpioNo = 7,
+        pinType = PinType.CE,
+        isLeft = false
     ),
     Pin(
-        27,
-        0,
-        PinType.ID_SD
+        pinNo = 27,
+        gpioNo = 0,
+        pinType = PinType.ID_SD,
+        isLeft = true
     ),
     Pin(
-        28,
-        1,
-        PinType.ID_SC
+        pinNo = 28,
+        gpioNo = 1,
+        pinType = PinType.ID_SC,
+        isLeft = false
     ),
     Pin(
-        29,
-        5,
-        PinType.NONE
+        pinNo = 29,
+        gpioNo = 5,
+        pinType = PinType.NONE,
+        isLeft = true
     ),
     Pin(
-        30,
-        -1,
-        PinType.GROUND
+        pinNo = 30,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = false
     ),
     Pin(
-        31,
-        6,
-        PinType.NONE
+        pinNo = 31,
+        gpioNo = 6,
+        pinType = PinType.NONE,
+        isLeft = true
     ),
     Pin(
-        32,
-        12,
-        PinType.PWM
+        pinNo = 32,
+        gpioNo = 12,
+        pinType = PinType.PWM,
+        isLeft = false
     ),
     Pin(
-        33,
-        13,
-        PinType.PWM
+        pinNo = 33,
+        gpioNo = 13,
+        pinType = PinType.PWM,
+        isLeft = true
     ),
     Pin(
-        34,
-        -1,
-        PinType.GROUND
+        pinNo = 34,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = false
     ),
     Pin(
-        35,
-        19,
-        PinType.PCM_FS
+        pinNo = 35,
+        gpioNo = 19,
+        pinType = PinType.PCM_FS,
+        isLeft = true
     ),
     Pin(
-        36,
-        16,
-        PinType.NONE
+        pinNo = 36,
+        gpioNo = 16,
+        pinType = PinType.NONE,
+        isLeft = false
     ),
     Pin(
-        37,
-        26,
-        PinType.NONE
+        pinNo = 37,
+        gpioNo = 26,
+        pinType = PinType.NONE,
+        isLeft = true
     ),
     Pin(
-        38,
-        20,
-        PinType.PCM_DIN
+        pinNo = 38,
+        gpioNo = 20,
+        pinType = PinType.PCM_DIN,
+        isLeft = false
     ),
     Pin(
-        39,
-        -1,
-        PinType.GROUND
+        pinNo = 39,
+        gpioNo = -1,
+        pinType = PinType.GROUND,
+        isLeft = true
     ),
     Pin(
-        40,
-        21,
-        PinType.PCM_DOUT
+        pinNo = 40,
+        gpioNo = 21,
+        pinType = PinType.PCM_DOUT,
+        isLeft = false
     )
 )

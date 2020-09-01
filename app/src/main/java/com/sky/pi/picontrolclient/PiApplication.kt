@@ -3,8 +3,8 @@ package com.sky.pi.picontrolclient
 import android.app.Application
 import com.sky.pi.client.controller.pinrepo.PinRepo
 import com.sky.pi.client.controller.pinrepo.PinRepoImpl
-import com.sky.pi.client.controller.pirepo.PiFakeRepoImpl
-import com.sky.pi.client.controller.pirepo.PiRepo
+import com.sky.pi.client.controller.pirepo.RaspiFakeRepoImpl
+import com.sky.pi.client.controller.pirepo.RaspiRepo
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.pi4bPinList
 import org.koin.android.ext.koin.androidContext
@@ -17,8 +17,8 @@ class PiApplication : Application() {
     val serverPort = 50053
 
     private val myModule = module {
-        single<PiRepo> {
-            PiFakeRepoImpl()
+        single<RaspiRepo> {
+            RaspiFakeRepoImpl()
         }
         single<PinRepo> {
             PinRepoImpl(pi4bPinList)
