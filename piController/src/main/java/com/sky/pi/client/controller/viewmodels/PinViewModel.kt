@@ -2,6 +2,7 @@ package com.sky.pi.client.controller.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sky.pi.client.controller.pinrepo.PinRepo
@@ -14,11 +15,14 @@ import kotlinx.coroutines.launch
 
 class PinViewModel(
     private val raspiRepo: RaspiRepo,
-    private val pinRepo: PinRepo
+    private val pinRepo: PinRepo,
 ) : ViewModel() {
 
     private val _pinListLD = MutableLiveData(listOf<Pin>())
     val pinListLD: LiveData<List<Pin>> = _pinListLD
+
+    val leftPinListLD: List<Pin> = pi4bPinList.asSequence().filter { it.isLeft }.toList()
+    val rightPinListLD: List<Pin> = pi4bPinList.asSequence().filter { !it.isLeft }.toList()
 
     private val _toastLD = SingleLiveEvent<String>()
     val toastLD: LiveData<String> = _toastLD
@@ -29,7 +33,10 @@ class PinViewModel(
         }
     }
 
-    fun getBoardPins(): List<Pin> = pi4bPinList
+    fun pinChecked(yes: Boolean, pinNo: Int) {
+        if (yes) addPin(pinNo = pinNo)
+        else deletePin(pinNo = pinNo)
+    }
 
     fun addPin(pinNo: Int) {
         pinRepo.add(pinNo)
@@ -63,7 +70,7 @@ class PinViewModel(
 
     private suspend fun updatePiRepo(
         operation: Operation,
-        pin: Pin
+        pin: Pin,
     ): Boolean = when (operation) {
         is Operation.INPUT -> TODO()
         is Operation.SWITCH -> raspiRepo.pinState(pin.gpioNo, operation)
