@@ -4,7 +4,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-object TextStyles {
+object Styles {
     val topBarTitle = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp,
@@ -29,3 +29,4 @@ object TextStyles {
         letterSpacing = 0.4.sp
     )
 }
+
