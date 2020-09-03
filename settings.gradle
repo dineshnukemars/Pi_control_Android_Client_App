@@ -1,3 +1,4 @@
+include ':Raspi-Repo'
 rootProject.name = "Pi_control_Android_Client_App"
 include ':app'
 include ':ui-xml'

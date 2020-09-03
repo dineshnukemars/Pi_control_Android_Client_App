@@ -1,12 +1,13 @@
 package com.sky.pi.picontrolclient
 
 import android.app.Application
-import com.sky.pi.client.controller.pinrepo.PinRepo
-import com.sky.pi.client.controller.pinrepo.PinRepoImpl
-import com.sky.pi.client.controller.pirepo.RaspiFakeRepoImpl
-import com.sky.pi.client.controller.pirepo.RaspiRepo
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.pi4bPinList
+import com.sky.pi.repo.pinrepo.PinRepo
+import com.sky.pi.repo.pinrepo.PinRepoImpl
+import com.sky.pi.repo.pirepo.RaspiFakeRepoImpl
+import com.sky.pi.repo.pirepo.RaspiRepo
+
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

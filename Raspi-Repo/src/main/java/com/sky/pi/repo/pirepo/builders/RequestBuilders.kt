@@ -1,4 +1,4 @@
-package com.sky.pi.client.controller.pirepo.builders
+package com.sky.pi.repo.pirepo.builders
 
 import com.sky.backend.grpc.pi.BlinkRequest
 import com.sky.backend.grpc.pi.GeneralRequest

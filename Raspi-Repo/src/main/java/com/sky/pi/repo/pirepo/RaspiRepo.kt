@@ -1,8 +1,9 @@
-package com.sky.pi.client.controller.pirepo
+package com.sky.pi.repo.pirepo
 
 import androidx.lifecycle.LiveData
-import com.sky.pi.client.controller.pirepo.entities.BoardInfo
 import com.sky.pi.client.libs.models.Operation
+import com.sky.pi.repo.pirepo.entities.BoardInfo
+
 
 interface RaspiRepo {
 

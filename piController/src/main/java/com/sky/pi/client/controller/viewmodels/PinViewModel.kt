@@ -2,20 +2,19 @@ package com.sky.pi.client.controller.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sky.pi.client.controller.pinrepo.PinRepo
-import com.sky.pi.client.controller.pirepo.RaspiRepo
 import com.sky.pi.client.libs.livedata.SingleLiveEvent
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
 import com.sky.pi.client.libs.models.pi4bPinList
+import com.sky.pi.repo.pinrepo.PinRepo
+import com.sky.pi.repo.pirepo.RaspiRepo
 import kotlinx.coroutines.launch
 
 class PinViewModel(
     private val raspiRepo: RaspiRepo,
-    private val pinRepo: PinRepo,
+    private val pinRepo: PinRepo
 ) : ViewModel() {
 
     private val _pinListLD = MutableLiveData(listOf<Pin>())
@@ -70,7 +69,7 @@ class PinViewModel(
 
     private suspend fun updatePiRepo(
         operation: Operation,
-        pin: Pin,
+        pin: Pin
     ): Boolean = when (operation) {
         is Operation.INPUT -> TODO()
         is Operation.SWITCH -> raspiRepo.pinState(pin.gpioNo, operation)

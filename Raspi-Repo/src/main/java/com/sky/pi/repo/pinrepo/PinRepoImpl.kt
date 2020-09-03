@@ -1,4 +1,4 @@
-package com.sky.pi.client.controller.pinrepo
+package com.sky.pi.repo.pinrepo
 
 import com.sky.pi.client.libs.collections.addPinToList
 import com.sky.pi.client.libs.collections.deletePinFromList
@@ -6,6 +6,7 @@ import com.sky.pi.client.libs.collections.findElseThrow
 import com.sky.pi.client.libs.collections.updatePinOnList
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
+
 
 class PinRepoImpl(private val boardPinList: List<Pin>) :
     PinRepo {

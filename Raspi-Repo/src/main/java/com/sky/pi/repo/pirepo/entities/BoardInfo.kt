@@ -1,4 +1,4 @@
-package com.sky.pi.client.controller.pirepo.entities
+package com.sky.pi.repo.pirepo.entities
 
 import com.sky.backend.grpc.pi.BoardInfoResponse
 

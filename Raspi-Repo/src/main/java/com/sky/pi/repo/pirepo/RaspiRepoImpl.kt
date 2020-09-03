@@ -1,48 +1,46 @@
-package com.sky.pi.client.controller.pirepo
+package com.sky.pi.repo.pirepo
+
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sky.backend.grpc.pi.PiAccessGrpcKt
-import com.sky.pi.client.controller.pirepo.builders.*
-import com.sky.pi.client.controller.pirepo.builders.createChannel
-import com.sky.pi.client.controller.pirepo.builders.generalRequest
-import com.sky.pi.client.controller.pirepo.builders.pwmRequest
-import com.sky.pi.client.controller.pirepo.builders.switchStateRequest
-import com.sky.pi.client.controller.pirepo.entities.BoardInfo
+import com.sky.backend.grpc.pi.PiAccessGrpc
 import com.sky.pi.client.libs.models.Operation
+import com.sky.pi.repo.pirepo.builders.*
+import com.sky.pi.repo.pirepo.entities.BoardInfo
 import io.grpc.ManagedChannel
 import java.util.concurrent.TimeUnit
 
-class RaspiRepoImpl(private val ipAddress: String, private val port: Int) :
-    RaspiRepo {
+class RaspiRepoImpl(
+    private val ipAddress: String,
+    private val port: Int
+) : RaspiRepo {
+
     private var grpcChannel: ManagedChannel? = null
-    private var _grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub? = null
-    private val grpcStub: PiAccessGrpcKt.PiAccessCoroutineStub
-        get() = _grpcStub ?: throw Error("Stub is null")
+    private lateinit var _grpcStub: PiAccessGrpc.PiAccessBlockingStub
 
     private val _isServerConnected = MutableLiveData<Boolean>()
     override val isServerConnected: LiveData<Boolean> = _isServerConnected
 
     override suspend fun connectServer(): Boolean {
-        val managedChannel =
-            createChannel(ipAddress, port)
+        val managedChannel = createChannel(ipAddress, port)
         grpcChannel = managedChannel
-        _grpcStub = PiAccessGrpcKt.PiAccessCoroutineStub(managedChannel)
+        _grpcStub = PiAccessGrpc.newBlockingStub(grpcChannel)
         _isServerConnected.value = true
+
         return true
     }
 
     override suspend fun boardInfo(deviceId: String): BoardInfo {
         val request = generalRequest("Android")
         return BoardInfo(
-            grpcStub.boardInfo(
+            _grpcStub.boardInfo(
                 request
             )
         )
     }
 
     override suspend fun pinState(pinNo: Int, operation: Operation.SWITCH): Boolean {
-        val response = grpcStub.switch(
+        val response = _grpcStub.switch_(
             switchStateRequest(
                 isOn = operation.isOn,
                 pinNo = pinNo
@@ -53,13 +51,13 @@ class RaspiRepoImpl(private val ipAddress: String, private val port: Int) :
 
     override suspend fun pwm(pin: Int, operation: Operation.PWM): Boolean {
         val request = pwmRequest(pin, operation)
-        val pwm = grpcStub.pwm(request)
+        val pwm = _grpcStub.pwm(request)
         return pwm.isCommandSuccess
     }
 
     override suspend fun blink(pin: Int, operation: Operation.BLINK): Boolean {
         val request = blinkRequest(pin, operation)
-        val blink = grpcStub.blink(request)
+        val blink = _grpcStub.blink(request)
         return blink.isCommandSuccess
     }
 
@@ -68,7 +66,7 @@ class RaspiRepoImpl(private val ipAddress: String, private val port: Int) :
     }
 
     override suspend fun shutdownServer() {
-        val response = grpcStub.shutdownServer(
+        val response = _grpcStub.shutdownServer(
             generalRequest(
                 "Android"
             )
