@@ -1,50 +1,49 @@
 package com.sky.pi.client.ui.compose.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Typography
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 
-val primaryColor = Color(0xfffdd835)
-val primaryLightColor = Color(0xffffff6b)
-val primaryDarkColor = Color(0xffc6a700)
-val primaryTextColor = Color.Black
+val primaryColor = Color(0xffffeb3b)
+val primaryVariant = Color(0xffc8b900)
+val secondary = Color(0xffffff72)
 
 private val DarkColorPalette = darkColors(
     primary = Color.Black,
     primaryVariant = Color.Gray,
-    secondary = primaryDarkColor
+    secondary = secondary
 )
 
 private val LightColorPalette = lightColors(
     primary = primaryColor,
-    primaryVariant = primaryLightColor,
-    secondary = primaryDarkColor,
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
+    primaryVariant = primaryVariant,
+    secondary = secondary,
+    onPrimary =  Color.Black,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
 )
 
-val typography = Typography(
-    body1 = TextStyle(
+val typography = Typography()
 
-        color = primaryTextColor
-    ),
-    button = TextStyle(
-        color = primaryTextColor
+object Styles {
 
-    ),
-    caption = TextStyle(
-        color = primaryTextColor
+    val topBarTitle = typography.h5
 
-    )
+    val contentTitle = typography.body1
+
+    val contentSubtitle1 = typography.subtitle2
+
+    val contentSubtitle2 = typography.caption
+}
+
+val shapes = Shapes(
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(0.dp)
 )
 
 @Composable
@@ -61,6 +60,7 @@ fun landingPage(
     MaterialTheme(
         colors = colors,
         shapes = shapes,
-        content = content
+        content = content,
+        typography = typography
     )
 }

@@ -1,4 +1,4 @@
-package com.sky.pi.client.libs.collections
+package com.sky.pi.client.libs.utils
 
 
 fun <T> Sequence<T>.findAndUpdate(newItem: T, predicate: (T) -> Boolean): Sequence<T> {

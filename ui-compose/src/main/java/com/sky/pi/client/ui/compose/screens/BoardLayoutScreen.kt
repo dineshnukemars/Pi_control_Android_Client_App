@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.Pin
-import com.sky.pi.client.ui.compose.description
-import com.sky.pi.client.ui.compose.isContainsPin
-import com.sky.pi.client.ui.compose.isEnabled
-import com.sky.pi.client.ui.compose.to2DigitString
+import com.sky.pi.client.libs.utils.description
+import com.sky.pi.client.libs.utils.isContainsPin
+import com.sky.pi.client.libs.utils.isEnabled
+import com.sky.pi.client.libs.utils.to2DigitString
 import com.sky.pi.client.ui.compose.ui.Styles
 
 

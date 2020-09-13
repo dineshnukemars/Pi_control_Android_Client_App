@@ -1,4 +1,4 @@
-package com.sky.pi.client.libs.collections
+package com.sky.pi.client.libs.utils
 
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
@@ -39,3 +39,14 @@ fun ifAlreadyExistThenThrow(
     val pin = list.find { it.pinNo == pinNo }
     if (pin != null) throw Error("WTF")
 }
+
+fun Pin.description(): String {
+    val builder = StringBuilder()
+    if (gpioNo != -1) builder.append("(Gpio $gpioNo)")
+    builder.append("$pinType")
+    return builder.toString()
+}
+
+fun List<Pin>.isContainsPin(pin: Pin) = find { it.pinNo == pin.pinNo } != null
+
+fun Pin.isEnabled() = gpioNo != -1

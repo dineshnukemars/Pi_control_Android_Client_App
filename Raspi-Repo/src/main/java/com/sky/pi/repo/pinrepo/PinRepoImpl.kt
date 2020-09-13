@@ -1,11 +1,11 @@
 package com.sky.pi.repo.pinrepo
 
-import com.sky.pi.client.libs.collections.addPinToList
-import com.sky.pi.client.libs.collections.deletePinFromList
-import com.sky.pi.client.libs.collections.findElseThrow
-import com.sky.pi.client.libs.collections.updatePinOnList
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
+import com.sky.pi.client.libs.utils.addPinToList
+import com.sky.pi.client.libs.utils.deletePinFromList
+import com.sky.pi.client.libs.utils.findElseThrow
+import com.sky.pi.client.libs.utils.updatePinOnList
 
 
 class PinRepoImpl(private val boardPinList: List<Pin>) :
