@@ -9,7 +9,6 @@
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
 PRG="$0"
-JAVA_HOME="C:\Program Files\Java\jdk-11.0.7"
 # Need this for relative symlinks.
 while [ -h "$PRG" ] ; do
     ls=`ls -ld "$PRG"`
