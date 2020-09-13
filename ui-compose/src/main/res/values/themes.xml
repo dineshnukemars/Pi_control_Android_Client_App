@@ -3,6 +3,7 @@
     <style name="App_theme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:colorPrimaryDark">#c6a700</item>
     </style>
 
     <style name="Theme.Pi_control_Android_Client_App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

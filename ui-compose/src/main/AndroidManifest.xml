@@ -5,7 +5,6 @@
     <application>
         <activity
             android:name="com.sky.pi.client.ui.compose.LandingPage"
-            android:label="@string/title_activity_landing_page"
             android:theme="@style/App_theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

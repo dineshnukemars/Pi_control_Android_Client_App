@@ -1,7 +1,6 @@
 package com.sky.pi.client.ui.compose.screens
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.RowScope.weight
 import androidx.compose.material.Checkbox
@@ -10,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.Pin
@@ -36,7 +34,6 @@ private fun listCheckboxesOnColumn(
         .fillMaxHeight()
         .padding(bottom = 56.dp)
         .weight(1f)
-        .background(Color(0xffff00ff))
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier,

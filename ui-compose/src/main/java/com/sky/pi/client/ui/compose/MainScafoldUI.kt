@@ -20,7 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import com.sky.pi.client.controller.viewmodels.PinViewModel
+import com.sky.pi.client.ui.compose.screens.AppSettingsScreen
 import com.sky.pi.client.ui.compose.screens.BoardLayoutScreen
+import com.sky.pi.client.ui.compose.screens.HelpScreen
 import com.sky.pi.client.ui.compose.screens.PinSettingsScreen
 import com.sky.pi.client.ui.compose.ui.Styles
 import com.sky.pi.client.ui.compose.ui.landingPage
@@ -38,8 +40,7 @@ class LandingPage : AppCompatActivity() {
 @Composable
 fun initScreen(viewModel: PinViewModel) {
     landingPage(darkTheme = false) {
-        val screenState: MutableState<CurrentScreen> =
-            remember { mutableStateOf(CurrentScreen.BoardLayout) }
+        val screenState = remember { mutableStateOf(CurrentScreen.BoardLayout) }
 
         Scaffold(
             topBar = { topBar(screenState) },
@@ -50,15 +51,18 @@ fun initScreen(viewModel: PinViewModel) {
 }
 
 @Composable
-fun bodyContent(screenState: MutableState<CurrentScreen>, viewModel: PinViewModel) {
-
+fun bodyContent(screenState: MutableState<CurrentScreen>, viewModel: PinViewModel) =
     when (screenState.value) {
         CurrentScreen.BoardLayout -> BoardLayoutScreen(viewModel)
         CurrentScreen.PinSettings -> PinSettingsScreen(viewModel)
-        CurrentScreen.Help -> TODO()
-        CurrentScreen.AppSettings -> TODO()
+        CurrentScreen.Help -> HelpScreen()
+        CurrentScreen.AppSettings -> AppSettingsScreen()
     }
-}
+
+@Composable
+private fun topBar(screenState: MutableState<CurrentScreen>) = TopAppBar(
+    title = { Text(text = screenState.value.screenName, style = Styles.topBarTitle) }
+)
 
 @Composable
 private fun bottomBar(screenState: MutableState<CurrentScreen>) =
@@ -85,11 +89,6 @@ private fun bottomBar(screenState: MutableState<CurrentScreen>) =
             modifier = modifier
         )
     }
-
-@Composable
-private fun topBar(screenState: MutableState<CurrentScreen>) = TopAppBar(
-    title = { Text(text = screenState.value.screenName, style = Styles.topBarTitle) }
-)
 
 enum class CurrentScreen(val screenName: String) {
     BoardLayout("Board Layout"), PinSettings("Pin Settings"), Help("Help"), AppSettings("App Settings")
