@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name="com.sky.pi.client.ui.compose.LandingPage"
+            android:name="com.sky.pi.client.ui.compose.MainScaffoldUI"
             android:theme="@style/App_theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

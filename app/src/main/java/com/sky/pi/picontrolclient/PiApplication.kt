@@ -1,6 +1,7 @@
 package com.sky.pi.picontrolclient
 
 import android.app.Application
+import com.sky.pi.client.controller.viewmodels.InfoViewModel
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.pi4bPinList
 import com.sky.pi.repo.pinrepo.PinRepo
@@ -26,6 +27,9 @@ class PiApplication : Application() {
         }
         viewModel {
             PinViewModel(get(), get())
+        }
+        viewModel {
+            InfoViewModel()
         }
     }
 
