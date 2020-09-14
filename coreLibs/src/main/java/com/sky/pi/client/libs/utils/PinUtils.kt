@@ -47,6 +47,9 @@ fun Pin.description(): String {
     return builder.toString()
 }
 
+fun Pin.fullDescription(): String = "[$pinNo]-" + description()
+
+
 fun List<Pin>.isContainsPin(pin: Pin) = find { it.pinNo == pin.pinNo } != null
 
 fun Pin.isEnabled() = gpioNo != -1

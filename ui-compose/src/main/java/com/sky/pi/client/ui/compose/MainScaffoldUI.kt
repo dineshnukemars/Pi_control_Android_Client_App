@@ -12,7 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HelpCenter
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.SettingsApplications
-import androidx.compose.material.icons.filled.SettingsPower
+import androidx.compose.material.icons.filled.SettingsInputHdmi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -39,8 +39,8 @@ class MainScaffoldUI : AppCompatActivity() {
     }
 
     @Composable
-    fun initScreen() {
-        landingPage(darkTheme = false) {
+    private fun initScreen() {
+        landingPage(darkTheme = true) {
             val screenState = remember { mutableStateOf(CurrentScreen.BoardLayout) }
             Scaffold(
                 topBar = { topBar(screenState) },
@@ -51,7 +51,7 @@ class MainScaffoldUI : AppCompatActivity() {
     }
 
     @Composable
-    fun bodyContent(screenState: MutableState<CurrentScreen>) =
+    private fun bodyContent(screenState: MutableState<CurrentScreen>) =
         when (screenState.value) {
             CurrentScreen.BoardLayout -> BoardLayoutScreen(pinViewModel)
             CurrentScreen.PinSettings -> PinSettingsScreen(pinViewModel)
@@ -75,7 +75,7 @@ class MainScaffoldUI : AppCompatActivity() {
             )
             IconButton(
                 onClick = { screenState.value = CurrentScreen.PinSettings },
-                icon = { Icon(Icons.Filled.SettingsPower) },
+                icon = { Icon(Icons.Filled.SettingsInputHdmi) },
                 modifier = modifier
             )
             IconButton(
@@ -90,7 +90,10 @@ class MainScaffoldUI : AppCompatActivity() {
             )
         }
 
-    enum class CurrentScreen(val screenName: String) {
-        BoardLayout("Board Layout"), PinSettings("Pin Settings"), Help("Help"), AppSettings("App Settings")
+    private enum class CurrentScreen(val screenName: String) {
+        BoardLayout("Board Layout"),
+        PinSettings("Pin Settings"),
+        Help("Help"),
+        AppSettings("App Settings")
     }
 }
