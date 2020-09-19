@@ -2,6 +2,7 @@ package com.sky.pi.client.libs.utils
 
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
+import com.sky.pi.client.libs.models.PinType
 
 
 fun findElseThrow(list: List<Pin>, pinNo: Int): Pin =
@@ -43,7 +44,7 @@ fun ifAlreadyExistThenThrow(
 fun Pin.description(): String {
     val builder = StringBuilder()
     if (gpioNo != -1) builder.append("(Gpio $gpioNo)")
-    builder.append("$pinType")
+    if (pinType != PinType.NONE) builder.append("$pinType")
     return builder.toString()
 }
 
