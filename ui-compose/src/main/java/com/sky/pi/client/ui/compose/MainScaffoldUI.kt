@@ -40,7 +40,7 @@ class MainScaffoldUI : AppCompatActivity() {
 
     @Composable
     private fun initScreen() {
-        landingPage(darkTheme = true) {
+        landingPage(darkTheme = false) {
             val screenState = remember { mutableStateOf(CurrentScreen.BoardLayout) }
             Scaffold(
                 topBar = { topBar(screenState) },

@@ -43,12 +43,18 @@ fun ifAlreadyExistThenThrow(
 
 fun Pin.description(): String {
     val builder = StringBuilder()
-    if (gpioNo != -1) builder.append("(Gpio $gpioNo)")
-    if (pinType != PinType.NONE) builder.append("$pinType")
+    if (gpioNo != -1) builder.append("G$gpioNo")
+    if (pinType != PinType.NONE) builder.append("-[$pinType]")
     return builder.toString()
 }
 
-fun Pin.fullDescription(): String = "[$pinNo]-" + description()
+fun Pin.descriptionInList(): String {
+    val builder = StringBuilder()
+    builder.append("$pinNo")
+    if (gpioNo != -1) builder.append("-Gpio($gpioNo)")
+    if (pinType != PinType.NONE) builder.append("\n$pinType")
+    return builder.toString()
+}
 
 
 fun List<Pin>.isContainsPin(pin: Pin) = find { it.pinNo == pin.pinNo } != null

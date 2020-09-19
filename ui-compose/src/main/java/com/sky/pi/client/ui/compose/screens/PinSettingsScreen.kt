@@ -3,21 +3,23 @@ package com.sky.pi.client.ui.compose.screens
 
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
-import androidx.compose.material.TextButton
+import androidx.compose.material.Slider
+import androidx.compose.material.Switch
 import androidx.compose.runtime.*
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sky.pi.client.controller.viewmodels.PinViewModel
 import com.sky.pi.client.libs.models.Operation
 import com.sky.pi.client.libs.models.Pin
-import com.sky.pi.client.libs.utils.fullDescription
+import com.sky.pi.client.libs.utils.descriptionInList
+import com.sky.pi.client.ui.compose.ui.getSelectableTextColor
 
 private val pinListWidth = 160.dp
 
@@ -35,9 +37,9 @@ fun PinSettingsScreen(vm: PinViewModel) {
 
 @Composable
 private fun ConstraintLayoutScope.showDivider(dividerRef: ConstrainedLayoutReference) {
-    Box(modifier = Modifier.width(2.dp).fillMaxHeight().constrainAs(dividerRef) {
+    Box(modifier = Modifier.width(1.dp).fillMaxHeight().constrainAs(dividerRef) {
         start.linkTo(parent.start, margin = pinListWidth)
-    }, backgroundColor = Color.Yellow)
+    }, backgroundColor = MaterialTheme.colors.onBackground)
 }
 
 @Composable
@@ -54,15 +56,14 @@ private fun ConstraintLayoutScope.showPinList(
             end.linkTo(dividerRef.start)
         }, items = pinListState.value
     ) {
-        TextButton(
-            contentColor = MaterialTheme.colors.secondary,
-            modifier = Modifier.padding(top = 10.dp),
-            onClick = {
+        val selectedPinState1 = selectedPinState.value == it.pinNo
+        Text(
+            text = it.descriptionInList(),
+            modifier = Modifier.padding(top = 10.dp).clickable {
                 selectedPinState.value = it.pinNo
-            }
-        ) {
-            Text(text = it.fullDescription())
-        }
+            },
+            color = getSelectableTextColor(selectedPinState1)
+        )
     }
 }
 
@@ -75,7 +76,7 @@ private fun ConstraintLayoutScope.showPinConfig(
     selectedPinState: MutableState<Int>
 ) {
     Column(modifier = Modifier.constrainAs(pinSettingsRef) {
-        start.linkTo(dividerRef.end, margin = 5.dp)
+        start.linkTo(dividerRef.end, margin = 2.dp)
     }) {
         val pin = pinListState.value.find { it.pinNo == selectedPinState.value } ?: return@Column
         Column {
@@ -83,8 +84,43 @@ private fun ConstraintLayoutScope.showPinConfig(
             pinOperationRadioBtn(pin, vm, Operation.SWITCH())
             pinOperationRadioBtn(pin, vm, Operation.PWM())
             pinOperationRadioBtn(pin, vm, Operation.INPUT())
+
+            Box(
+                modifier = Modifier.height(1.dp).fillMaxWidth().padding(top = 5.dp),
+                backgroundColor = MaterialTheme.colors.onBackground
+            )
+
+            val operation = pin.operation
+            when (operation) {
+                Operation.NONE -> return@Column
+                is Operation.INPUT -> TODO()
+                is Operation.SWITCH -> showSwitch(pin, vm, operation)
+                is Operation.BLINK -> showBlink(pin, vm, operation)
+                is Operation.PWM -> showPwm(pin, vm, operation)
+            }
+
+
         }
     }
+}
+
+@Composable
+fun showPwm(pin: Pin, vm: PinViewModel, operation: Operation.PWM) {
+    Slider(value = operation.dutyCycle, onValueChange = {
+        vm.updatePin(pin.pinNo, operation.copy(dutyCycle = it))
+    })
+}
+
+@Composable
+fun showBlink(pin: Pin, vm: PinViewModel, operation: Operation.BLINK) {
+
+}
+
+@Composable
+fun showSwitch(pin: Pin, vm: PinViewModel, operation: Operation.SWITCH) {
+    Switch(checked = operation.isOn, onCheckedChange = {
+        vm.updatePin(pin.pinNo, operation.copy(it))
+    })
 }
 
 @Composable

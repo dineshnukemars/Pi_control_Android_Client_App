@@ -7,9 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-val primaryColor = Color(0xfffdd835)
-val primaryVariant = Color(0xffffff6b)
-val secondary = Color(0xffc6a700)
+val primary = Color(0xfffdd835) // yellow
+val lightPrimary = Color(0xffffff6b) // light yellow
+val darkSecondary = Color(0xffc6a700) // dark yellow
+val darkestSecondary = Color(0xff6b5b01) // dark yellow
 
 private val DarkColorPalette = darkColors(
     primary = Color.Black,
@@ -18,13 +19,18 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = primaryColor,
-    primaryVariant = primaryVariant,
-    secondary = secondary,
+    primary = primary,
+    primaryVariant = lightPrimary,
+    secondary = darkSecondary,
+    secondaryVariant = darkestSecondary,
+    background = Color.White,
+    surface = Color.White,
+    error = Color.Red,
     onPrimary = Color.Black,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
+    onError = Color.White
 )
 
 val typography = Typography()
@@ -64,3 +70,7 @@ fun landingPage(
         typography = typography
     )
 }
+
+fun getSelectableTextColor(selectedPinState: Boolean) =
+    if (selectedPinState) primary
+    else Color.Black
